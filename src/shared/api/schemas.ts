@@ -26,5 +26,5 @@ export const itemSchema = z.object({
 
 export type Item = z.infer<typeof itemSchema>;
 
-// ItemCard bileşeninin ihtiyaç duyduğu türetilmiş tip.
-export type ItemCardProps = Pick<Item, 'id' | 'name' | 'emoji' | 'summary' | 'distribution'>;
+
+export const itemListSchema = z.array(itemSchema);

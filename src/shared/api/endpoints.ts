@@ -1,8 +1,7 @@
-import { categorySchema, itemSchema } from './schemas';
+import { categorySchema, itemSchema, itemListSchema } from './schemas';
 import type { Category, Item } from './schemas';
-
 import { getJson, HttpError } from './client';
-import { z } from 'zod';
+
 
 export async function fetchCategory(slug: string, signal?: AbortSignal): Promise<Category | null> {
   const encodedSlug = encodeURIComponent(slug);
@@ -18,8 +17,8 @@ export async function fetchCategory(slug: string, signal?: AbortSignal): Promise
 
 export async function fetchItemsByCategory(slug: string, signal?: AbortSignal): Promise<Item[]> {
   const encodedSlug = encodeURIComponent(slug);
-  const itemsArraySchema = z.array(itemSchema);
-  return await getJson(`/items?categoryId=${encodedSlug}`, itemsArraySchema, signal);
+  // Artık her çağrıda şema oluşturmuyoruz, sabiti kullanıyoruz
+  return await getJson(`/items?categoryId=${encodedSlug}`, itemListSchema, signal);
 }
 
 export async function fetchItem(slug: string, signal?: AbortSignal): Promise<Item | null> {

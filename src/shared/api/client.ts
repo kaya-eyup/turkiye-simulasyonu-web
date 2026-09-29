@@ -40,11 +40,8 @@ export function toUserMessage(err: unknown): string {
   if (err instanceof z.ZodError) {
     return 'Sunucudan gelen veri yapısı hatalı. Lütfen daha sonra tekrar deneyin.';
   }
-  if (err instanceof Error && err.name === 'AbortError') {
-    return 'İstek iptal edildi.';
-  }
-  if (err instanceof Error) {
-     return err.message;
+  if (err instanceof TypeError) {
+    return 'Sunucuya ulaşılamadı. Bağlantını kontrol et.';
   }
   return 'Bilinmeyen bir hata oluştu.';
 }
