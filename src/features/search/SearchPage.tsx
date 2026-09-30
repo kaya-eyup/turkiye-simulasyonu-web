@@ -62,7 +62,12 @@ export function SearchPage() {
     ...itemQueries.search({ q: debouncedQ, page }),
     placeholderData: keepPreviousData,
   });
-  if (data && data.totalPages > 0 && page > data.totalPages) {
+  if (
+    !isPlaceholderData &&
+    data &&
+    data.totalPages > 0 &&
+    page > data.totalPages
+  ) {
     return <Navigate to={getHref(data.totalPages)} replace />;
   }
   return (
