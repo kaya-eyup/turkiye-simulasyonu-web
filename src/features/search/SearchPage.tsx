@@ -74,6 +74,7 @@ export function SearchPage() {
     <div className="search-page-container">
       <div className="search-header">
         <input
+          aria-label="Ara"
           type="text"
           value={rawQ}
           onChange={(e) => handleChange(e.target.value)}

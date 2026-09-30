@@ -13,3 +13,11 @@
 body {
   margin: 0;
 }
+
+.summary {
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* 2 satırda kes */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

@@ -51,8 +51,6 @@ function CategoryView({ slug }: { slug: string }) {
   // 4. Veri yoksa (404)
   if (!category) return <NotFoundPage />;
 
-  // Hocanın sorusu: items || [] silindiğinde TypeScript items tipini daraltıyor mu?
-  // Aşağıdaki satırı bu şekilde yaz, hata verip vermediğine bak.
   const sortedItems = [...items].sort((a, b) => {
     const avgA = summarize(a.distribution).average;
     const avgB = summarize(b.distribution).average;

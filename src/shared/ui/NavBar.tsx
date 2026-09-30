@@ -1,4 +1,4 @@
-import { Link, Form, useMatch } from "react-router";
+import { NavLink, Form, useMatch } from "react-router";
 import {
   SEARCH_PARAMS,
   MAX_QUERY_LENGTH,
@@ -19,7 +19,7 @@ export function NavBar() {
       }}
     >
       {/* Sol: Logo / Anasayfa */}
-      <Link
+      <NavLink
         to="/"
         style={{
           fontWeight: "bold",
@@ -27,8 +27,8 @@ export function NavBar() {
           textDecoration: "none",
         }}
       >
-        Türkiye Simülasyonu
-      </Link>
+       🧿 Türkiye Simülasyonu
+      </NavLink>
 
       {/* Orta: Arama Formu (Sadece arama sayfasında değilsek görünür) */}
       {!onSearchPage && (
@@ -55,7 +55,7 @@ export function NavBar() {
       )}
 
       {/* Sağ: Hakkında */}
-      <Link to="/hakkinda">Hakkında</Link>
+      <NavLink to="/hakkinda">Hakkında</NavLink>
     </nav>
   );
 }

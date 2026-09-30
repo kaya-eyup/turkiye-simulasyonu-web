@@ -26,7 +26,6 @@ export async function fetchItemsByCategory(
   signal?: AbortSignal,
 ): Promise<Item[]> {
   const encodedSlug = encodeURIComponent(slug);
-  // Artık her çağrıda şema oluşturmuyoruz, sabiti kullanıyoruz
   return await getJson(
     `/items?categoryId=${encodedSlug}`,
     itemListSchema,
@@ -49,27 +48,22 @@ export async function fetchItem(
   }
 }
 
-// Mevcut fetch fonksiyonlarına uygun bir fetchAllItems yazıyoruz
 export async function fetchAllItems(signal?: AbortSignal): Promise<Item[]> {
   return getJson("/items", itemListSchema, signal);
 }
 
-// Adapter: sunucu gelince içi değişir, imzası değişmez
 export async function searchItems(
   { q, page }: { q: string; page: number }, 
   signal?: AbortSignal
 ): Promise<SearchResult> {
-  // Arama metni yoksa ağa çıkmadan boş dön
   if (!q) {
     return { items: [], total: 0, totalPages: 0 };
   }
 
-  // Tüm veriyi çek (Ekim'deki gerçek backend'de bu mantık SQL'e kayacak)
   const allItems = await fetchAllItems(signal);
   
   const normalizedQuery = normalizeForSearch(q);
   
-  // İsim veya özette eşleşme ara
   const filteredItems = allItems.filter(item => 
     normalizeForSearch(item.name).includes(normalizedQuery) ||
     normalizeForSearch(item.summary).includes(normalizedQuery)
@@ -78,7 +72,6 @@ export async function searchItems(
   const total = filteredItems.length;
   const totalPages = Math.ceil(total / PAGE_SIZE);
 
-  // İstenen sayfayı slice ile kes ((page - 1) * 5'ten, page * 5'e kadar)
   const startIndex = (page - 1) * PAGE_SIZE;
   const endIndex = startIndex + PAGE_SIZE;
   

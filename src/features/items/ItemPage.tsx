@@ -37,14 +37,12 @@ function ItemView({ id }: { id: string }) {
       <header>
         <div style={{ fontSize: "4rem" }}>{item.emoji}</div>
         <h1>{item.name}</h1>
-        {/* Bağımlı bileşeni çağırıyoruz */}
         <CategoryLink categoryId={item.categoryId} />
       </header>
 
       <p className="item-summary">{item.summary}</p>
 
       <section className="item-ratings">
-        {/* Adım 0.3'te yazdığımız bileşen */}
         <RatingBars distribution={item.distribution} />
       </section>
     </article>
@@ -54,13 +52,11 @@ function ItemView({ id }: { id: string }) {
 export function ItemPage() {
   const { id } = useParams<{ id: string }>();
 
-  // URL parametresini sınırda doğrula (Boundary Validation)
   const parsed = slugSchema.safeParse(id);
 
   if (!parsed.success) {
     return <NotFoundPage />;
   }
 
-  // Tipli ve güvenli ID'yi View bileşenine ver
   return <ItemView id={parsed.data} />;
 }
