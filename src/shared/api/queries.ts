@@ -1,7 +1,5 @@
 import { queryOptions } from '@tanstack/react-query';
-import { fetchCategory, fetchItem, fetchItemsByCategory } from "./endpoints";
-
-
+import {searchItems, fetchCategory, fetchItem, fetchItemsByCategory } from "./endpoints";
 // 1. Kategoriler için Query Key Factory
 export const categoryQueries = {
   all: () => ["categories"] as const,
@@ -31,6 +29,10 @@ export const itemQueries = {
       queryKey: [...itemQueries.all(), "byCategory", categoryId] as const,
       queryFn: ({ signal }) => fetchItemsByCategory(categoryId, signal),
     }),
-    
+    search: (params: { q: string; page: number }) =>
+    queryOptions({
+      queryKey: [...itemQueries.all(), "search", params] as const,
+      queryFn: ({ signal }) => searchItems(params, signal),
+    }),
   
 };
