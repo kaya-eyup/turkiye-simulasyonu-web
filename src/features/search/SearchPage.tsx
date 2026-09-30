@@ -1,11 +1,17 @@
-import { useSearchParams } from 'react-router';
-import { useQuery } from '@tanstack/react-query';
-import { itemQueries } from '../../shared/api/queries';
-import { parseQuery, parsePage, SEARCH_PARAMS, MAX_QUERY_LENGTH } from './searchParams';
-import { useDebounce } from '../../shared/hooks/useDebounce';
-import { ErrorState } from '../../shared/ui/ErrorState';
-import { toUserMessage } from '../../shared/api/client'; 
-import { ItemCard } from '../items/ItemCard';
+import { useSearchParams, Navigate } from "react-router";
+import { useQuery, keepPreviousData } from "@tanstack/react-query";
+import { itemQueries } from "../../shared/api/queries";
+import {
+  parseQuery,
+  parsePage,
+  SEARCH_PARAMS,
+  MAX_QUERY_LENGTH,
+} from "./searchParams";
+import { useDebounce } from "../../shared/hooks/useDebounce";
+import { ErrorState } from "../../shared/ui/ErrorState";
+import { toUserMessage } from "../../shared/api/client";
+import { ItemCard } from "../items/ItemCard";
+import { Pagination } from "./Pagination";
 
 export function SearchPage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -20,26 +26,48 @@ export function SearchPage() {
 
   // 3. Effect yerine Event Handler: Sayfa sıfırlama vs. kullanıcı olayının (yazmanın) sonucudur
   function handleChange(value: string) {
-    setSearchParams((prev) => {
-      if (value === "") {
-        prev.delete(SEARCH_PARAMS.query);
-      } else {
-        prev.set(SEARCH_PARAMS.query, value);
-      }
-      prev.delete(SEARCH_PARAMS.page); // Arama değişince sayfayı 1'e döndür (sil)
-      return prev;
-    }, { replace: true });
+    setSearchParams(
+      (prev) => {
+        if (value === "") {
+          prev.delete(SEARCH_PARAMS.query);
+        } else {
+          prev.set(SEARCH_PARAMS.query, value);
+        }
+        prev.delete(SEARCH_PARAMS.page); // Arama değişince sayfayı 1'e döndür (sil)
+        return prev;
+      },
+      { replace: true },
+    );
   }
-
+  function getHref(targetPage: number) {
+    const params = new URLSearchParams(searchParams);
+    if (targetPage <= 1) {
+      params.delete(SEARCH_PARAMS.page);
+    } else {
+      params.set(SEARCH_PARAMS.page, targetPage.toString());
+    }
+    const queryString = params.toString();
+    return queryString ? `?${queryString}` : "?";
+  }
   // 4. API'ye giden istekte debouncedQ (gecikmeli metin) kullanılır
-  const { data, isPending, isError, error, refetch, isFetching } = useQuery(
-    itemQueries.search({ q: debouncedQ, page })
-  );
-
+  const {
+    data,
+    isPending,
+    isError,
+    error,
+    refetch,
+    isFetching,
+    isPlaceholderData,
+  } = useQuery({
+    ...itemQueries.search({ q: debouncedQ, page }),
+    placeholderData: keepPreviousData,
+  });
+  if (data && data.totalPages > 0 && page > data.totalPages) {
+    return <Navigate to={getHref(data.totalPages)} replace />;
+  }
   return (
     <div className="search-page-container">
       <div className="search-header">
-        {/* Hocanın tuzağı: Input q'ya değil rawQ'ya bağlanır. Yoksa yazılan boşluklar anında silinir. */}
         <input
           type="text"
           value={rawQ}
@@ -52,27 +80,39 @@ export function SearchPage() {
       </div>
 
       <div className="search-results">
-        {/* Boş arama kontrolü "q" ile yapılır. Kutu boşaltıldığında 300ms beklemeden "yazmaya başla" der. */}
         {q === "" ? (
           <p>Aramak için yazmaya başla</p>
+        ) : debouncedQ === "" ? (
+          <p>Aranıyor…</p>
         ) : isPending ? (
           <p>Yükleniyor...</p>
         ) : isError ? (
-          <ErrorState 
-            message={toUserMessage(error)} 
-            onRetry={() => refetch()} 
-            isRetrying={isFetching} 
+          <ErrorState
+            message={toUserMessage(error)}
+            onRetry={() => refetch()}
+            isRetrying={isFetching}
           />
         ) : data.total === 0 ? (
           <p>Sonuç bulunamadı</p>
         ) : (
           <>
             <p className="results-count">{data.total} sonuç bulundu</p>
-            <div className="item-grid">
-              {data.items.map(item => (
+            <div
+              className="item-grid"
+              style={{
+                opacity: isPlaceholderData ? 0.5 : 1,
+                transition: "opacity 0.2s",
+              }}
+            >
+              {data.items.map((item) => (
                 <ItemCard key={item.id} item={item} />
               ))}
             </div>
+            <Pagination
+              page={page}
+              totalPages={data.totalPages}
+              getHref={getHref}
+            />
           </>
         )}
       </div>
