@@ -21,7 +21,7 @@ export const itemSchema = z.object({
   emoji: z.string(),
   summary: z.string(),
   distribution: z.tuple([voteCount, voteCount, voteCount, voteCount, voteCount]),
-  createdAt: z.string().datetime(), // ISO 8601 tarihi
+  createdAt: z.iso.datetime(), 
 });
 
 export type Item = z.infer<typeof itemSchema>;
