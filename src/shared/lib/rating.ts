@@ -1,40 +1,46 @@
 import type { Item } from "../api/schemas";
 
+export type RatingRow = { stars: number; count: number; percent: number };
 
 export type RatingSummary = {
   total: number;
   average: number | null;
-  percents: number[];
+  rows: RatingRow[]; // 1★ → 5★ sırasıyla
 };
 
 export function summarize(distribution: Item["distribution"]): RatingSummary {
-  // 1. Toplam oy sayısını bul
   const total = distribution.reduce((sum, count) => sum + count, 0);
 
-  // 2. Uç durum (Edge Case): Hiç oy yoksa sıfıra bölünme (NaN) hatasını önle
+  // Uç durum: Hiç oy yoksa
   if (total === 0) {
     return {
       total: 0,
       average: null,
-      percents: [0, 0, 0, 0, 0],
+      rows: distribution.map((_count, index) => ({
+        stars: index + 1,
+        count: 0,
+        percent: 0,
+      })),
     };
   }
 
-  // 3. Ortalamayı hesapla: (1*oy + 2*oy + 3*oy + 4*oy + 5*oy) / toplam
-  // index 0 = 1 yıldız, index 1 = 2 yıldız olduğu için (index + 1) ile çarpıyoruz.
+  // Ortalamayı hesapla
   const weightedSum = distribution.reduce(
     (sum, count, index) => sum + count * (index + 1),
     0
   );
   const average = weightedSum / total;
 
-  // 4. Her bir yıldızın yüzdelik dilimini hesapla
-  // Sayıyı yuvarlamıyoruz, çünkü veriyi hazırlamak iş mantığıdır, ekranda yuvarlayıp göstermek UI'ın (sunumun) işidir.
-  const percents = distribution.map((count) => (count / total) * 100);
+  // Tüm veriyi tek bir satır nesnesinde (row) topla
+  const rows = distribution.map((count, index) => ({
+    stars: index + 1,
+    count,
+    percent: (count / total) * 100,
+  }));
 
   return {
     total,
     average,
-    percents,
+    rows,
   };
 }
