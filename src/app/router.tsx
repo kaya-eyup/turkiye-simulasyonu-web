@@ -4,7 +4,7 @@ import { HomePage } from "../features/home/HomePage";
 import { CategoryPage } from "../features/categories/CategoryPage";
 import { ItemPage } from "../features/items/ItemPage";
 import { AboutPage } from "../features/about/AboutPage";
-import { NotFoundPage } from "./NotFoundPage";
+import { NotFoundPage } from "../shared/ui/NotFoundPage";
 
 export const router = createBrowserRouter([
   {
