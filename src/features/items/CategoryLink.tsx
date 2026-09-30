@@ -1,0 +1,20 @@
+import { useQuery } from "@tanstack/react-query";
+import { categoryQueries } from "../../shared/api/queries";
+import { Link } from "react-router";
+
+export function CategoryLink({ categoryId }: { categoryId: string }) {
+  const { data: category, isPending, isError } = useQuery(
+    categoryQueries.detail(categoryId)
+  );
+
+  // Veri gelmediyse, yükleniyorsa veya hata varsa sadece ID'yi metin olarak göster
+  if (isPending || isError || !category) {
+    return <span className="category-fallback">{categoryId}</span>;
+  }
+
+  return (
+    <Link to={`/kategori/${category.id}`} className="category-link">
+      {category.name}
+    </Link>
+  );
+}
