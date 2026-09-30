@@ -5,6 +5,7 @@ import { CategoryPage } from "../features/categories/CategoryPage";
 import { ItemPage } from "../features/items/ItemPage";
 import { AboutPage } from "../features/about/AboutPage";
 import { NotFoundPage } from "../shared/ui/NotFoundPage";
+import { SearchPage} from "../features/search/SearchPage"
 
 export const router = createBrowserRouter([
   {
@@ -15,6 +16,7 @@ export const router = createBrowserRouter([
       { path: "kategori/:slug", element: <CategoryPage /> },
       { path: "oge/:id", element: <ItemPage /> },
       { path: "hakkinda", element: <AboutPage /> },
+      { path: "ara", element: <SearchPage /> },
       { path: "*", element: <NotFoundPage /> },
     ],
   },
