@@ -6,12 +6,26 @@
 
 :root {
   color-scheme: light dark;
+  --color-bg: light-dark(#ffffff, #121212);
+  --color-text: light-dark(#1a1a1a, #e8e8e8);
+  --color-muted: light-dark(#6b6b6b, #9a9a9a);
+  --color-border: light-dark(#d4d4d4, #3a3a3a);
+  --color-track: light-dark(#eeeeee, #2a2a2a);
+  --color-accent: #f59e0b;
   font-family: system-ui, "Segoe UI", Roboto, sans-serif;
   line-height: 1.5;
+}
+:root[data-theme="light"] {
+  color-scheme: light;
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
 }
 
 body {
   margin: 0;
+  background: var(--color-bg);
+  color: var(--color-text);
 }
 
 .summary {
@@ -20,4 +34,9 @@ body {
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+/* NavLink aktifken "active" sınıfını ekler; kural olmadan görünmez */
+nav a.active {
+  font-weight: 600;
+  text-decoration: underline;
 }

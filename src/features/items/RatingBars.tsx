@@ -45,7 +45,7 @@ export function RatingBars({ distribution }: RatingBarsProps) {
             <div
               style={{
                 flex: 1,
-                backgroundColor: "#eee",
+                backgroundColor: "var(--color-track)",
                 height: "8px",
                 borderRadius: "4px",
               }}
@@ -53,7 +53,7 @@ export function RatingBars({ distribution }: RatingBarsProps) {
               <div
                 style={{
                   width: `${row.percent}%`,
-                  backgroundColor: "#f59e0b",
+                  backgroundColor: "var(--color-accent)",
                   height: "100%",
                   borderRadius: "4px",
                 }}
