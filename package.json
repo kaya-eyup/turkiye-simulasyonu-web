@@ -11,7 +11,8 @@
     "preview": "vite preview",
     "api": "json-server db/db.json --port 3000",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "dev:all": "concurrently -n api,web -c blue,green \"npm:api\" \"npm:dev\""
   },
   "engines": {
     "node": ">=22.22.0"
@@ -30,6 +31,7 @@
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.7",
     "@vitejs/plugin-react": "^6.1.1",
+    "concurrently": "^10.0.5",
     "eslint": "^10.10.0",
     "eslint-plugin-react-hooks": "^7.1.1",
     "eslint-plugin-react-refresh": "^0.5.6",
