@@ -3,8 +3,6 @@ import { slugSchema } from "../../shared/api/schemas";
 
 export const VOTES_STORAGE_KEY = "tsim:votes:v1";
 
-// Zod çok değerli literal için z.union veya z.enum(sadece string) kullanılır.
-// 1|2|3|4|5 tipini güvenli elde etmek için union yazıyoruz:
 export const starsSchema = z.union([
   z.literal(1),
   z.literal(2),
