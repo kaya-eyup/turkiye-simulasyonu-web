@@ -27,7 +27,7 @@ export function NavBar() {
           textDecoration: "none",
         }}
       >
-       🧿 Türkiye Simülasyonu
+        🧿 Türkiye Simülasyonu
       </NavLink>
 
       {/* Orta: Arama Formu (Sadece arama sayfasında değilsek görünür) */}

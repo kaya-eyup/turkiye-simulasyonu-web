@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z } from "zod";
 
 export const slugSchema = z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/);
 
@@ -20,11 +20,16 @@ export const itemSchema = z.object({
   name: z.string(),
   emoji: z.string(),
   summary: z.string(),
-  distribution: z.tuple([voteCount, voteCount, voteCount, voteCount, voteCount]),
-  createdAt: z.iso.datetime(), 
+  distribution: z.tuple([
+    voteCount,
+    voteCount,
+    voteCount,
+    voteCount,
+    voteCount,
+  ]),
+  createdAt: z.iso.datetime(),
 });
 
 export type Item = z.infer<typeof itemSchema>;
-
 
 export const itemListSchema = z.array(itemSchema);

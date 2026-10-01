@@ -1,29 +1,32 @@
-import { z } from 'zod';
+import { z } from "zod";
 
 export class HttpError extends Error {
   status: number;
   constructor(status: number, message: string) {
     super(message);
     this.status = status;
-    this.name = 'HttpError';
+    this.name = "HttpError";
   }
 }
 
 export async function getJson<T>(
   path: string,
   schema: z.ZodType<T>,
-  signal?: AbortSignal
+  signal?: AbortSignal,
 ): Promise<T> {
   const baseUrl = import.meta.env.VITE_API_URL;
   if (!baseUrl) {
-    throw new Error('VITE_API_URL environment variable is not defined.');
+    throw new Error("VITE_API_URL environment variable is not defined.");
   }
 
   const url = `${baseUrl}${path}`;
   const response = await fetch(url, { signal });
 
   if (!response.ok) {
-    throw new HttpError(response.status, `HTTP Error: ${response.status} ${response.statusText}`);
+    throw new HttpError(
+      response.status,
+      `HTTP Error: ${response.status} ${response.statusText}`,
+    );
   }
 
   const data = await response.json();
@@ -33,15 +36,16 @@ export async function getJson<T>(
 
 export function toUserMessage(err: unknown): string {
   if (err instanceof HttpError) {
-    if (err.status === 404) return 'Aradığınız içerik bulunamadı.';
-    if (err.status >= 500) return 'Sunucuda bir hata oluştu, lütfen daha sonra tekrar deneyin.';
+    if (err.status === 404) return "Aradığınız içerik bulunamadı.";
+    if (err.status >= 500)
+      return "Sunucuda bir hata oluştu, lütfen daha sonra tekrar deneyin.";
     return `Beklenmeyen bir hata oluştu (Kod: ${err.status}).`;
   }
   if (err instanceof z.ZodError) {
-    return 'Sunucudan gelen veri yapısı hatalı. Lütfen daha sonra tekrar deneyin.';
+    return "Sunucudan gelen veri yapısı hatalı. Lütfen daha sonra tekrar deneyin.";
   }
   if (err instanceof TypeError) {
-    return 'Sunucuya ulaşılamadı. Bağlantını kontrol et.';
+    return "Sunucuya ulaşılamadı. Bağlantını kontrol et.";
   }
-  return 'Bilinmeyen bir hata oluştu.';
+  return "Bilinmeyen bir hata oluştu.";
 }

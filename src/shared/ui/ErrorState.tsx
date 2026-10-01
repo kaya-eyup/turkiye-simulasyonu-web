@@ -9,7 +9,7 @@ export function ErrorState({ message, onRetry, isRetrying }: ErrorStateProps) {
     <div className="error-container">
       <p>{message}</p>
       <button onClick={onRetry} disabled={isRetrying}>
-        {isRetrying ? 'Deneniyor...' : 'Tekrar dene'}
+        {isRetrying ? "Deneniyor..." : "Tekrar dene"}
       </button>
     </div>
   );

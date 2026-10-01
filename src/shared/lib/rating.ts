@@ -27,7 +27,7 @@ export function summarize(distribution: Item["distribution"]): RatingSummary {
   // Ortalamayı hesapla
   const weightedSum = distribution.reduce(
     (sum, count, index) => sum + count * (index + 1),
-    0
+    0,
   );
   const average = weightedSum / total;
 

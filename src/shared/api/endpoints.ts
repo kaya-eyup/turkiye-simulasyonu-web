@@ -53,20 +53,21 @@ export async function fetchAllItems(signal?: AbortSignal): Promise<Item[]> {
 }
 
 export async function searchItems(
-  { q, page }: { q: string; page: number }, 
-  signal?: AbortSignal
+  { q, page }: { q: string; page: number },
+  signal?: AbortSignal,
 ): Promise<SearchResult> {
   if (!q) {
     return { items: [], total: 0, totalPages: 0 };
   }
 
   const allItems = await fetchAllItems(signal);
-  
+
   const normalizedQuery = normalizeForSearch(q);
-  
-  const filteredItems = allItems.filter(item => 
-    normalizeForSearch(item.name).includes(normalizedQuery) ||
-    normalizeForSearch(item.summary).includes(normalizedQuery)
+
+  const filteredItems = allItems.filter(
+    (item) =>
+      normalizeForSearch(item.name).includes(normalizedQuery) ||
+      normalizeForSearch(item.summary).includes(normalizedQuery),
   );
 
   const total = filteredItems.length;
@@ -74,12 +75,12 @@ export async function searchItems(
 
   const startIndex = (page - 1) * PAGE_SIZE;
   const endIndex = startIndex + PAGE_SIZE;
-  
+
   const paginatedItems = filteredItems.slice(startIndex, endIndex);
 
   return {
     items: paginatedItems,
     total,
-    totalPages
+    totalPages,
   };
 }

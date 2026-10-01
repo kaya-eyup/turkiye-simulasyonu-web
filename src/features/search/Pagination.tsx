@@ -14,30 +14,37 @@ export function Pagination({ page, totalPages, getHref }: PaginationProps) {
   const pages = Array.from({ length: totalPages }, (_, index) => index + 1);
 
   return (
-    <nav aria-label="Sayfalama" style={{ display: 'flex', gap: '8px', alignItems: 'center', marginTop: '1rem' }}>
-      
+    <nav
+      aria-label="Sayfalama"
+      style={{
+        display: "flex",
+        gap: "8px",
+        alignItems: "center",
+        marginTop: "1rem",
+      }}
+    >
       {/* Önceki Butonu: 1. sayfadaysak Link değil Span olur (disabled mantığı) */}
       {page > 1 ? (
         <Link to={getHref(page - 1)}>Önceki</Link>
       ) : (
-        <span style={{ color: '#999', cursor: 'not-allowed' }}>Önceki</span>
+        <span style={{ color: "#999", cursor: "not-allowed" }}>Önceki</span>
       )}
 
       {/* Sayfa Numaraları */}
-      {pages.map(p => {
+      {pages.map((p) => {
         const isCurrentPage = p === page;
 
         return isCurrentPage ? (
           // Bulunduğumuz sayfa: Link değil, kalın font ve ekran okuyucu için aria-current="page"
-          <span 
-            key={p} 
-            aria-current="page" 
-            style={{ fontWeight: 'bold', padding: '0 4px' }}
+          <span
+            key={p}
+            aria-current="page"
+            style={{ fontWeight: "bold", padding: "0 4px" }}
           >
             {p}
           </span>
         ) : (
-          <Link key={p} to={getHref(p)} style={{ padding: '0 4px' }}>
+          <Link key={p} to={getHref(p)} style={{ padding: "0 4px" }}>
             {p}
           </Link>
         );
@@ -47,9 +54,8 @@ export function Pagination({ page, totalPages, getHref }: PaginationProps) {
       {page < totalPages ? (
         <Link to={getHref(page + 1)}>Sonraki</Link>
       ) : (
-        <span style={{ color: '#999', cursor: 'not-allowed' }}>Sonraki</span>
+        <span style={{ color: "#999", cursor: "not-allowed" }}>Sonraki</span>
       )}
-      
     </nav>
   );
 }

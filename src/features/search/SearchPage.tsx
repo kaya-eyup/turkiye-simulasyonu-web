@@ -30,7 +30,7 @@ export function SearchPage() {
         } else {
           prev.set(SEARCH_PARAMS.query, value);
         }
-        prev.delete(SEARCH_PARAMS.page); 
+        prev.delete(SEARCH_PARAMS.page);
         return prev;
       },
       { replace: true },

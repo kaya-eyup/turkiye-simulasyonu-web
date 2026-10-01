@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 export function useDebounce<T>(value: T, delay: number): T {
   const [debouncedValue, setDebouncedValue] = useState<T>(value);
@@ -10,7 +10,7 @@ export function useDebounce<T>(value: T, delay: number): T {
     }, delay);
 
     // 2. Kapatma (Cleanup) Fonksiyonu
-    // Kullanıcı 'delay' süresi dolmadan yeni bir tuşa basarsa, 
+    // Kullanıcı 'delay' süresi dolmadan yeni bir tuşa basarsa,
     // önceki effect temizlenir ve bu clearTimeout çalışarak eski sayacı öldürür.
     return () => {
       clearTimeout(timer);
