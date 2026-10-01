@@ -4,6 +4,7 @@ import {
   MAX_QUERY_LENGTH,
 } from "../../features/search/searchParams";
 import { ThemeToggle } from "../../features/theme/ThemeToggle";
+import { MyVotesBadge } from "../../features/votes/MyVotesBadge";
 export function NavBar() {
   // Şu anda /ara sayfasında mıyız? (URL eşleşmiyorsa null döner)
   const onSearchPage = useMatch("/ara") !== null;
@@ -56,6 +57,7 @@ export function NavBar() {
       <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
         <NavLink to="/hakkinda">Hakkında</NavLink>
         <ThemeToggle />
+        <MyVotesBadge />
       </div>{" "}
     </nav>
   );
