@@ -16,15 +16,12 @@ import { Pagination } from "./Pagination";
 export function SearchPage() {
   const [searchParams, setSearchParams] = useSearchParams();
 
-  // 1. Tek Kaynak: State yok, doğrudan URL okunur
   const rawQ = searchParams.get(SEARCH_PARAMS.query) ?? "";
   const q = parseQuery(rawQ);
   const page = parsePage(searchParams.get(SEARCH_PARAMS.page));
 
-  // 2. Debounce edilen değer artık kullanıcı girdisi değil, API'ye gidecek sorgudur
   const debouncedQ = useDebounce(q, 300);
 
-  // 3. Effect yerine Event Handler: Sayfa sıfırlama vs. kullanıcı olayının (yazmanın) sonucudur
   function handleChange(value: string) {
     setSearchParams(
       (prev) => {
@@ -33,7 +30,7 @@ export function SearchPage() {
         } else {
           prev.set(SEARCH_PARAMS.query, value);
         }
-        prev.delete(SEARCH_PARAMS.page); // Arama değişince sayfayı 1'e döndür (sil)
+        prev.delete(SEARCH_PARAMS.page); 
         return prev;
       },
       { replace: true },
@@ -49,7 +46,6 @@ export function SearchPage() {
     const queryString = params.toString();
     return queryString ? `?${queryString}` : "?";
   }
-  // 4. API'ye giden istekte debouncedQ (gecikmeli metin) kullanılır
   const {
     data,
     isPending,

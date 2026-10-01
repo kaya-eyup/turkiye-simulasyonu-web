@@ -8,7 +8,6 @@ import { summarize } from "../../shared/lib/rating";
 import { toUserMessage } from "../../shared/api/client";
 import { ErrorState } from "../../shared/ui/ErrorState";
 function CategoryView({ slug }: { slug: string }) {
-  // 1. İki sorgudan da isError, error, refetch ve isFetching durumlarını alıyoruz
   const {
     data: category,
     isPending: isCatPending,
@@ -27,12 +26,9 @@ function CategoryView({ slug }: { slug: string }) {
     isFetching: isItemsFetching,
   } = useQuery(itemQueries.byCategory(slug));
 
-  // 2. Yükleniyor durumu
   if (isCatPending || isItemsPending) return <p>Yükleniyor...</p>;
 
-  // 3. EKSİK OLAN HATA DALI (isPending'den sonra, !category'den önce)
   if (isCatError || isItemsError) {
-    // Hangi sorgu hata verdiyse onun mesajını göster
     const error = catError || itemsError;
     const isFetching = isCatFetching || isItemsFetching;
 
@@ -48,7 +44,6 @@ function CategoryView({ slug }: { slug: string }) {
     );
   }
 
-  // 4. Veri yoksa (404)
   if (!category) return <NotFoundPage />;
 
   const sortedItems = [...items].sort((a, b) => {
@@ -81,7 +76,6 @@ function CategoryView({ slug }: { slug: string }) {
 export function CategoryPage() {
   const { slug } = useParams<{ slug: string }>();
 
-  // URL parametresini Zod ile sınırda doğrula
   const parsed = slugSchema.safeParse(slug);
   if (!parsed.success) return <NotFoundPage />;
 
