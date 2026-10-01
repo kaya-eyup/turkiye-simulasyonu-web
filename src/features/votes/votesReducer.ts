@@ -3,13 +3,8 @@ import { slugSchema } from "../../shared/api/schemas";
 
 export const VOTES_STORAGE_KEY = "tsim:votes:v1";
 
-export const starsSchema = z.union([
-  z.literal(1),
-  z.literal(2),
-  z.literal(3),
-  z.literal(4),
-  z.literal(5),
-]);
+export const STARS = [1, 2, 3, 4, 5] as const;
+export const starsSchema = z.literal(STARS); // dizi değişirse şema ve tip de değişir
 export type Stars = z.infer<typeof starsSchema>;
 
 export const myVotesSchema = z.record(slugSchema, starsSchema);

@@ -6,7 +6,7 @@ import { VotesStateContext, VotesDispatchContext } from "./votesContext";
 export function VotesProvider({ children }: { children: ReactNode }) {
   const [votes, dispatch] = useReducer(
     votesReducer,
-    null as unknown, // initial argument (initializer olduğu için dikkate alınmaz)
+    null,
     () => readStorage(VOTES_STORAGE_KEY, myVotesSchema) ?? {},
   );
 
