@@ -3,11 +3,17 @@ import { useLocalStorage } from "../../shared/hooks/useLocalStorage";
 import { THEME_STORAGE_KEY, themeSchema, ThemeContext } from "./themeContext";
 
 function getSystemTheme() {
-  return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  return window.matchMedia("(prefers-color-scheme: dark)").matches
+    ? "dark"
+    : "light";
 }
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setTheme] = useLocalStorage(THEME_STORAGE_KEY, themeSchema, getSystemTheme);
+  const [theme, setTheme] = useLocalStorage(
+    THEME_STORAGE_KEY,
+    themeSchema,
+    getSystemTheme,
+  );
 
   // Yan etki (Side effect): React dışı bir mutasyon (DOM'a müdahale)
   useEffect(() => {
@@ -20,12 +26,8 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
       theme,
       toggleTheme: () => setTheme((t) => (t === "dark" ? "light" : "dark")),
     }),
-    [theme, setTheme]
+    [theme, setTheme],
   );
 
-  return (
-    <ThemeContext value={value}>
-      {children}
-    </ThemeContext>
-  );
+  return <ThemeContext value={value}>{children}</ThemeContext>;
 }

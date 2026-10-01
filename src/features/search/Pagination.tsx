@@ -27,7 +27,9 @@ export function Pagination({ page, totalPages, getHref }: PaginationProps) {
       {page > 1 ? (
         <Link to={getHref(page - 1)}>Önceki</Link>
       ) : (
-        <span style={{ color: "#999", cursor: "not-allowed" }}>Önceki</span>
+        <span style={{ color: "var(--color-muted)", cursor: "not-allowed" }}>
+          Önceki
+        </span>
       )}
 
       {/* Sayfa Numaraları */}
@@ -54,7 +56,9 @@ export function Pagination({ page, totalPages, getHref }: PaginationProps) {
       {page < totalPages ? (
         <Link to={getHref(page + 1)}>Sonraki</Link>
       ) : (
-        <span style={{ color: "#999", cursor: "not-allowed" }}>Sonraki</span>
+        <span style={{ color: "var(--color-muted)", cursor: "not-allowed" }}>
+          Sonraki
+        </span>
       )}
     </nav>
   );
