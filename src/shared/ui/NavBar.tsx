@@ -1,9 +1,9 @@
-import {Link, NavLink, Form, useMatch } from "react-router";
+import { Link, NavLink, Form, useMatch } from "react-router";
 import {
   SEARCH_PARAMS,
   MAX_QUERY_LENGTH,
 } from "../../features/search/searchParams";
-
+import { ThemeToggle } from "../../features/theme/ThemeToggle";
 export function NavBar() {
   // Şu anda /ara sayfasında mıyız? (URL eşleşmiyorsa null döner)
   const onSearchPage = useMatch("/ara") !== null;
@@ -29,7 +29,6 @@ export function NavBar() {
       >
         🧿 Türkiye Simülasyonu
       </Link>
-
       {/* Orta: Arama Formu (Sadece arama sayfasında değilsek görünür) */}
       {!onSearchPage && (
         <Form
@@ -53,9 +52,11 @@ export function NavBar() {
           <button type="submit">Ara</button>
         </Form>
       )}
-
-      {/* Sağ: Hakkında */}
-      <NavLink to="/hakkinda">Hakkında</NavLink>
+      {/* Sağ: Hakkında & Tema butonu*/}
+      <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+        <NavLink to="/hakkinda">Hakkında</NavLink>
+        <ThemeToggle />
+      </div>{" "}
     </nav>
   );
 }
