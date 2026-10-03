@@ -15,13 +15,18 @@ async function request<T>(
   schema: z.ZodType<T>,
   init?: RequestInit,
 ): Promise<T> {
-  const response = await fetch(path, init);
+  const baseUrl = import.meta.env.VITE_API_URL;
+  if (!baseUrl) {
+    throw new Error("VITE_API_URL environment variable is not defined.");
+  }
+  const response = await fetch(`${baseUrl}${path}`, init);
 
   if (!response.ok) {
-    throw new Error("Sunucuyla iletişim kurarken bir hata oluştu.");
+    throw new Error(`HTTP Error: ${response.status} ${response.statusText}`);
   }
 
   const data = await response.json();
+  // Zod, gelen veri şemaya uymazsa ZodError fırlatır.
   return schema.parse(data);
 }
 
@@ -34,8 +39,19 @@ export function getJson<T>(
 }
 
 // Hata mesajlarını kullanıcı diline çeviren yardımcı
-export function toUserMessage(error: unknown): string {
-  if (error instanceof Error) return error.message;
+export function toUserMessage(err: unknown): string {
+  if (err instanceof HttpError) {
+    if (err.status === 404) return "Aradığınız içerik bulunamadı.";
+    if (err.status >= 500)
+      return "Sunucuda bir hata oluştu, lütfen daha sonra tekrar deneyin.";
+    return `Beklenmeyen bir hata oluştu (Kod: ${err.status}).`;
+  }
+  if (err instanceof z.ZodError) {
+    return "Sunucudan gelen veri yapısı hatalı. Lütfen daha sonra tekrar deneyin.";
+  }
+  if (err instanceof TypeError) {
+    return "Sunucuya ulaşılamadı. Bağlantını kontrol et.";
+  }
   return "Bilinmeyen bir hata oluştu.";
 }
 
