@@ -9,12 +9,22 @@ export class HttpError extends Error {
   }
 }
 
+export class ConfigError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "ConfigError";
+  }
+}
+export const API_BASE_URL = import.meta.env.VITE_API_URL;
 // Dışarıdan doğrudan çağrılmayan, ortak fetch mantığını tutan yardımcı fonksiyon
 async function request<T>(
   path: string,
   schema: z.ZodType<T>,
   init?: RequestInit,
 ): Promise<T> {
+  if (!API_BASE_URL) {
+    throw new ConfigError("VITE_API_URL tanımlı değil.");
+  }
   const baseUrl = import.meta.env.VITE_API_URL;
   if (!baseUrl) {
     throw new Error("VITE_API_URL environment variable is not defined.");
