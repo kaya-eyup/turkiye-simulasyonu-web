@@ -9,43 +9,32 @@ export class HttpError extends Error {
   }
 }
 
-export async function getJson<T>(
+// Dışarıdan doğrudan çağrılmayan, ortak fetch mantığını tutan yardımcı fonksiyon
+async function request<T>(
   path: string,
   schema: z.ZodType<T>,
-  signal?: AbortSignal,
+  init?: RequestInit,
 ): Promise<T> {
-  const baseUrl = import.meta.env.VITE_API_URL;
-  if (!baseUrl) {
-    throw new Error("VITE_API_URL environment variable is not defined.");
-  }
-
-  const url = `${baseUrl}${path}`;
-  const response = await fetch(url, { signal });
+  const response = await fetch(path, init);
 
   if (!response.ok) {
-    throw new HttpError(
-      response.status,
-      `HTTP Error: ${response.status} ${response.statusText}`,
-    );
+    throw new Error("Sunucuyla iletişim kurarken bir hata oluştu.");
   }
 
   const data = await response.json();
-  // Zod, gelen veri şemaya uymazsa ZodError fırlatır.
   return schema.parse(data);
 }
 
-export function toUserMessage(err: unknown): string {
-  if (err instanceof HttpError) {
-    if (err.status === 404) return "Aradığınız içerik bulunamadı.";
-    if (err.status >= 500)
-      return "Sunucuda bir hata oluştu, lütfen daha sonra tekrar deneyin.";
-    return `Beklenmeyen bir hata oluştu (Kod: ${err.status}).`;
-  }
-  if (err instanceof z.ZodError) {
-    return "Sunucudan gelen veri yapısı hatalı. Lütfen daha sonra tekrar deneyin.";
-  }
-  if (err instanceof TypeError) {
-    return "Sunucuya ulaşılamadı. Bağlantını kontrol et.";
-  }
+export function getJson<T>(
+  path: string,
+  schema: z.ZodType<T>,
+  signal?: AbortSignal,
+) {
+  return request(path, schema, { signal });
+}
+
+// Hata mesajlarını kullanıcı diline çeviren yardımcı (önceki günlerden)
+export function toUserMessage(error: unknown): string {
+  if (error instanceof Error) return error.message;
   return "Bilinmeyen bir hata oluştu.";
 }
