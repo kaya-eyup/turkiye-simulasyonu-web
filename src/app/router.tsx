@@ -6,7 +6,7 @@ import { ItemPage } from "../features/items/ItemPage";
 import { AboutPage } from "../features/about/AboutPage";
 import { NotFoundPage } from "../shared/ui/NotFoundPage";
 import { SearchPage } from "../features/search/SearchPage";
-import { RouteErrorPage } from "../shared/ui/RouterErrorPage";
+import { RouteErrorPage } from "../shared/ui/RouteErrorPage";
 export const router = createBrowserRouter([
   {
     path: "/",
