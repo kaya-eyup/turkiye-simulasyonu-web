@@ -2,9 +2,18 @@ import { categorySchema, itemSchema, itemListSchema } from "./schemas";
 import type { Category, Item } from "./schemas";
 import { getJson, HttpError } from "./client";
 import { normalizeForSearch } from "../lib/normalize";
-
+import { commentListSchema } from "./schemas";
 export const PAGE_SIZE = 5;
 export type SearchResult = { items: Item[]; total: number; totalPages: number };
+
+export const fetchCommentsByItem = async (
+  itemId: string,
+  signal?: AbortSignal,
+) => {
+  const url = `/comments?itemId=${encodeURIComponent(itemId)}&_sort=-createdAt`;
+  const data = await fetch(url, { signal });
+  return commentListSchema.parse(data);
+};
 
 export async function fetchCategory(
   slug: string,

@@ -14,6 +14,18 @@ export type Category = z.infer<typeof categorySchema>;
 // distribution alanı: 5 elemanlı tuple (1, 2, 3, 4, 5 yıldız sayıları)
 const voteCount = z.number().int().nonnegative();
 
+export const commentSchema = z.object({
+  id: z.string().min(1),
+  itemId: slugSchema,
+  author: z.string().min(1),
+  body: z.string().min(1),
+  createdAt: z.string().datetime(), // ISO 8601 formatı
+});
+
+export const commentListSchema = z.array(commentSchema);
+
+export type ItemComment = z.infer<typeof commentSchema>;
+
 export const itemSchema = z.object({
   id: slugSchema,
   categoryId: slugSchema,

@@ -40,3 +40,8 @@ export const itemQueries = {
       queryFn: ({ signal }) => searchItems(params, signal),
     }),
 };
+
+export const commentQueries = {
+  all: () => ["comments"],
+  byItem: (itemId: string) => [...commentQueries.all(), "byItem", itemId],
+};
