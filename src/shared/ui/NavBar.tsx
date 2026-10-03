@@ -58,7 +58,7 @@ export function NavBar() {
         <NavLink to="/hakkinda">Hakkında</NavLink>
         <ThemeToggle />
         <MyVotesBadge />
-      </div>{" "}
+      </div>
     </nav>
   );
 }

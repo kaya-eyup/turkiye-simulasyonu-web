@@ -27,8 +27,8 @@ function ItemDetail({ item }: { item: Item }) {
       <p className="item-summary">{item.summary}</p>
 
       <section className="item-ratings">
-        <RatingBars distribution={distribution} /> {/* DEĞİŞTİ */}
-        <VoteButtons itemId={item.id} current={myVote} /> {/* YENİ */}
+        <RatingBars distribution={distribution} />
+        <VoteButtons itemId={item.id} current={myVote} />
       </section>
     </article>
   );

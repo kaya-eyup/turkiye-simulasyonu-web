@@ -20,6 +20,7 @@ export function SearchPage() {
   const q = parseQuery(rawQ);
   const page = parsePage(searchParams.get(SEARCH_PARAMS.page));
 
+  // Gecikme URL'ye değil sorguya uygulanıyor: input URL'yi anında günceller (geri tuşu ve yenileme tutarlı kalır), sunucuya giden istek ise yazma bitince gider.
   const debouncedQ = useDebounce(q, 300);
 
   function handleChange(value: string) {
@@ -30,6 +31,7 @@ export function SearchPage() {
         } else {
           prev.set(SEARCH_PARAMS.query, value);
         }
+        // Yeni aramada sayfa 1'e dön. Kural olay yöneticisinde, çünkü "kullanıcı yazdı" bir olay; effect'te olsaydı URL'den gelen her değişimde (geri tuşu dahil) sayfa sıfırlanırdı.
         prev.delete(SEARCH_PARAMS.page);
         return prev;
       },
