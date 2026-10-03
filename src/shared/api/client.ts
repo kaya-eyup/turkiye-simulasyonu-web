@@ -19,7 +19,7 @@ async function request<T>(
 
   const response = await fetch(`${baseUrl}${path}`, init);
 
-  if (!baseUrl) {
+  if (!response.ok) {
     throw new HttpError(
       response.status,
       `HTTP Error: ${response.status} ${response.statusText}`,
@@ -27,7 +27,10 @@ async function request<T>(
   }
 
   if (!response.ok) {
-    throw new Error(`HTTP Error: ${response.status} ${response.statusText}`);
+    throw new HttpError(
+      response.status,
+      `HTTP Error: ${response.status} ${response.statusText}`,
+    );
   }
 
   const data = await response.json();

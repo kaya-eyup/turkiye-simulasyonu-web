@@ -7,6 +7,11 @@ import { ItemCard } from "../items/ItemCard";
 import { summarize } from "../../shared/lib/rating";
 import { toUserMessage } from "../../shared/api/client";
 import { ErrorState } from "../../shared/ui/ErrorState";
+import {
+  fetchCategory,
+  fetchItemsByCategory,
+} from "../../shared/api/endpoints";
+
 function CategoryView({ slug }: { slug: string }) {
   const {
     data: category,
@@ -15,7 +20,10 @@ function CategoryView({ slug }: { slug: string }) {
     error: catError,
     refetch: refetchCat,
     isFetching: isCatFetching,
-  } = useQuery(categoryQueries.detail(slug));
+  } = useQuery({
+    queryKey: categoryQueries.detail(slug),
+    queryFn: ({ signal }) => fetchCategory(slug, signal), // endpoint'ten gelen fetch fonksiyonu
+  });
 
   const {
     data: items,
@@ -24,7 +32,10 @@ function CategoryView({ slug }: { slug: string }) {
     error: itemsError,
     refetch: refetchItems,
     isFetching: isItemsFetching,
-  } = useQuery(itemQueries.byCategory(slug));
+  } = useQuery({
+    queryKey: itemQueries.byCategory(slug),
+    queryFn: ({ signal }) => fetchItemsByCategory(slug, signal), // endpoint'ten gelen fetch fonksiyonu
+  });
 
   if (isCatPending || isItemsPending) return <p>Yükleniyor...</p>;
 
