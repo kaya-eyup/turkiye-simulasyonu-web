@@ -57,7 +57,7 @@ export function CommentForm({ itemId }: { itemId: string }) {
 
     addComment.mutate(
       {
-        author: result.data.author || "Anonim",
+        author: result.data.author || "anonim",
         body: result.data.body,
       },
       {
@@ -153,7 +153,7 @@ export function CommentForm({ itemId }: { itemId: string }) {
           ) : (
             <span /> /* Boş bırakıldığında flex hizalamasını bozmamak için */
           )}
-          <span style={{ color: "gray" }}>
+          <span style={{ color: "var(--color-muted)" }}>
             {values.body.length}/{BODY_MAX}
           </span>
         </div>
