@@ -1,4 +1,9 @@
-import { categorySchema, itemSchema, itemListSchema } from "./schemas";
+import {
+  categorySchema,
+  itemSchema,
+  itemListSchema,
+  categoryListSchema,
+} from "./schemas";
 import type { Category, Item } from "./schemas";
 import { getJson, HttpError } from "./client";
 import { normalizeForSearch } from "../lib/normalize";
@@ -107,3 +112,7 @@ export async function postComment(input: NewComment): Promise<ItemComment> {
     commentSchema,
   );
 }
+
+export const fetchCategories = async (signal?: AbortSignal) => {
+  return getJson("/categories?_sort=order", categoryListSchema, signal);
+};

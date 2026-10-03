@@ -45,3 +45,4 @@ export const itemSchema = z.object({
 export type Item = z.infer<typeof itemSchema>;
 
 export const itemListSchema = z.array(itemSchema);
+export const categoryListSchema = z.array(categorySchema);

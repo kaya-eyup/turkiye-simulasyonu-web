@@ -1,7 +1,6 @@
 import { queryOptions } from "@tanstack/react-query";
 import {
   searchItems,
-  fetchCategory,
   fetchItem,
   fetchItemsByCategory,
   fetchCommentsByItem,
@@ -9,13 +8,8 @@ import {
 // 1. Kategoriler için Query Key Factory
 export const categoryQueries = {
   all: () => ["categories"] as const,
-  detail: (slug: string) =>
-    queryOptions({
-      // Anahtar: ["categories", "yemek-kulturu"]
-      queryKey: [...categoryQueries.all(), slug] as const,
-      // signal'i doğrudan fetch fonksiyonuna iletiyoruz
-      queryFn: ({ signal }) => fetchCategory(slug, signal),
-    }),
+  list: () => [...categoryQueries.all(), "list"] as const,
+  detail: (slug: string) => [...categoryQueries.all(), "detail", slug] as const,
 };
 
 // 2. Öğeler için Query Key Factory (Hiyerarşik Yapı)
