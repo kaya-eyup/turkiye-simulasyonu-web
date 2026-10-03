@@ -2,9 +2,9 @@ import { categorySchema, itemSchema, itemListSchema } from "./schemas";
 import type { Category, Item } from "./schemas";
 import { getJson, HttpError } from "./client";
 import { normalizeForSearch } from "../lib/normalize";
-import { commentListSchema } from "./schemas";
+import { commentListSchema, commentSchema } from "./schemas";
 import type { ItemComment } from "./schemas";
-
+import { postJson } from "./client";
 export const PAGE_SIZE = 5;
 export type SearchResult = { items: Item[]; total: number; totalPages: number };
 
@@ -97,4 +97,13 @@ export async function searchItems(
     total,
     totalPages,
   };
+}
+export type NewComment = Pick<ItemComment, "itemId" | "author" | "body">;
+
+export async function postComment(input: NewComment): Promise<ItemComment> {
+  return postJson(
+    "/comments",
+    { ...input, createdAt: new Date().toISOString() },
+    commentSchema,
+  );
 }

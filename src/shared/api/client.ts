@@ -33,8 +33,16 @@ export function getJson<T>(
   return request(path, schema, { signal });
 }
 
-// Hata mesajlarını kullanıcı diline çeviren yardımcı (önceki günlerden)
+// Hata mesajlarını kullanıcı diline çeviren yardımcı
 export function toUserMessage(error: unknown): string {
   if (error instanceof Error) return error.message;
   return "Bilinmeyen bir hata oluştu.";
+}
+
+export function postJson<T>(path: string, body: unknown, schema: z.ZodType<T>) {
+  return request(path, schema, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
 }
