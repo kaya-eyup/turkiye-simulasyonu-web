@@ -10,6 +10,7 @@ import { ErrorState } from "../../shared/ui/ErrorState";
 import { useDisplayedDistribution } from "../votes/useDisplayedDistribution";
 import { useMyVotes } from "../votes/votesContext";
 import { VoteButtons } from "../votes/VoteButtons";
+import { CommentSection } from "../comments/CommentSection";
 
 function ItemDetail({ item }: { item: Item }) {
   // Erken return yok, item kesinlikle var. Hook'lar güvenle koşulsuz çağrılır.
@@ -30,6 +31,7 @@ function ItemDetail({ item }: { item: Item }) {
         <RatingBars distribution={distribution} />
         <VoteButtons itemId={item.id} current={myVote} />
       </section>
+      <CommentSection itemId={item.id} />
     </article>
   );
 }
