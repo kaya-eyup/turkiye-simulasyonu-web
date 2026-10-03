@@ -16,15 +16,10 @@ async function request<T>(
   init?: RequestInit,
 ): Promise<T> {
   const baseUrl = import.meta.env.VITE_API_URL;
-
-  const response = await fetch(`${baseUrl}${path}`, init);
-
-  if (!response.ok) {
-    throw new HttpError(
-      response.status,
-      `HTTP Error: ${response.status} ${response.statusText}`,
-    );
+  if (!baseUrl) {
+    throw new Error("VITE_API_URL environment variable is not defined.");
   }
+  const response = await fetch(`${baseUrl}${path}`, init);
 
   if (!response.ok) {
     throw new HttpError(

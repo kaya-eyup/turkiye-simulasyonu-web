@@ -4,12 +4,23 @@ import {
   fetchItem,
   fetchItemsByCategory,
   fetchCommentsByItem,
+  fetchCategories,
+  fetchCategory,
 } from "./endpoints";
 // 1. Kategoriler için Query Key Factory
 export const categoryQueries = {
   all: () => ["categories"] as const,
-  list: () => [...categoryQueries.all(), "list"] as const,
-  detail: (slug: string) => [...categoryQueries.all(), "detail", slug] as const,
+  list: () =>
+    queryOptions({
+      queryKey: [...categoryQueries.all(), "list"] as const,
+      queryFn: ({ signal }) => fetchCategories(signal),
+    }),
+  detail: (slug: string) =>
+    queryOptions({
+      // Anahtar: ["categories", "detail", "yemek-kulturu"]
+      queryKey: [...categoryQueries.all(), "detail", slug] as const,
+      queryFn: ({ signal }) => fetchCategory(slug, signal),
+    }),
 };
 
 // 2. Öğeler için Query Key Factory (Hiyerarşik Yapı)

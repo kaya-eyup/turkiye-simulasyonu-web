@@ -1,7 +1,7 @@
 import { Link } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import { categoryQueries } from "../../shared/api/queries";
-import { fetchCategories } from "../../shared/api/endpoints";
+import { toUserMessage } from "../../shared/api/client";
 import { ErrorState } from "../../shared/ui/ErrorState";
 
 export function HomePage() {
@@ -12,10 +12,7 @@ export function HomePage() {
     error,
     refetch,
     isFetching,
-  } = useQuery({
-    queryKey: categoryQueries.list(),
-    queryFn: ({ signal }) => fetchCategories(signal),
-  });
+  } = useQuery(categoryQueries.list());
 
   return (
     <div className="home-page">
@@ -32,7 +29,7 @@ export function HomePage() {
 
         {isError && (
           <ErrorState
-            message={error.message}
+            message={toUserMessage(error)}
             onRetry={() => refetch()}
             isRetrying={isFetching}
           />
