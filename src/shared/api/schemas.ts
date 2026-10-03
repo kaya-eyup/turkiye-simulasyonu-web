@@ -17,9 +17,9 @@ const voteCount = z.number().int().nonnegative();
 export const commentSchema = z.object({
   id: z.string().min(1),
   itemId: slugSchema,
-  author: z.string().min(1),
-  body: z.string().min(1),
-  createdAt: z.string().datetime(), // ISO 8601 formatı
+  author: z.string(),
+  body: z.string(),
+  createdAt: z.iso.datetime(), // ISO 8601 formatı
 });
 
 export const commentListSchema = z.array(commentSchema);

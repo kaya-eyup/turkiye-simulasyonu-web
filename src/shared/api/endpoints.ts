@@ -3,17 +3,22 @@ import type { Category, Item } from "./schemas";
 import { getJson, HttpError } from "./client";
 import { normalizeForSearch } from "../lib/normalize";
 import { commentListSchema } from "./schemas";
+import type { ItemComment } from "./schemas";
+
 export const PAGE_SIZE = 5;
 export type SearchResult = { items: Item[]; total: number; totalPages: number };
 
-export const fetchCommentsByItem = async (
+export async function fetchCommentsByItem(
   itemId: string,
   signal?: AbortSignal,
-) => {
-  const url = `/comments?itemId=${encodeURIComponent(itemId)}&_sort=-createdAt`;
-  const data = await fetch(url, { signal });
-  return commentListSchema.parse(data);
-};
+): Promise<ItemComment[]> {
+  const encoded = encodeURIComponent(itemId);
+  return getJson(
+    `/comments?itemId=${encoded}&_sort=-createdAt`,
+    commentListSchema,
+    signal,
+  );
+}
 
 export async function fetchCategory(
   slug: string,

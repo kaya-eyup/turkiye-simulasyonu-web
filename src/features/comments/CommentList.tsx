@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { commentQueries } from "../../shared/api/queries";
-import { fetchCommentsByItem } from "../../shared/api/endpoints";
 import { ErrorState } from "../../shared/ui/ErrorState";
+import { toUserMessage } from "../../shared/api/client";
 
 const dateFormatter = new Intl.DateTimeFormat("tr-TR", {
   dateStyle: "medium",
@@ -20,16 +20,13 @@ export function CommentList({ itemId }: CommentListProps) {
     error,
     refetch,
     isFetching,
-  } = useQuery({
-    queryKey: commentQueries.byItem(itemId),
-    queryFn: ({ signal }) => fetchCommentsByItem(itemId, signal),
-  });
+  } = useQuery(commentQueries.byItem(itemId));
 
   if (isPending) return <p>Yorumlar yükleniyor…</p>;
   if (isError) {
     return (
       <ErrorState
-        message={error.message}
+        message={toUserMessage(error)}
         onRetry={() => refetch()}
         isRetrying={isFetching}
       />
@@ -44,7 +41,7 @@ export function CommentList({ itemId }: CommentListProps) {
           key={c.id}
           style={{
             marginBottom: "1.5rem",
-            borderBottom: "1px solid #eee",
+            borderBottom: "1px solid var(--color-border)",
             paddingBottom: "1rem",
           }}
         >
@@ -58,7 +55,7 @@ export function CommentList({ itemId }: CommentListProps) {
             <strong>{c.author}</strong>
             <time
               dateTime={c.createdAt}
-              style={{ color: "gray", fontSize: "0.9rem" }}
+              style={{ color: "var(--color-muted)", fontSize: "0.9rem" }}
             >
               {dateFormatter.format(new Date(c.createdAt))}
             </time>

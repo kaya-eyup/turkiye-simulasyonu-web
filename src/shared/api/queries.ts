@@ -4,6 +4,7 @@ import {
   fetchCategory,
   fetchItem,
   fetchItemsByCategory,
+  fetchCommentsByItem,
 } from "./endpoints";
 // 1. Kategoriler için Query Key Factory
 export const categoryQueries = {
@@ -42,6 +43,10 @@ export const itemQueries = {
 };
 
 export const commentQueries = {
-  all: () => ["comments"],
-  byItem: (itemId: string) => [...commentQueries.all(), "byItem", itemId],
+  all: () => ["comments"] as const,
+  byItem: (itemId: string) =>
+    queryOptions({
+      queryKey: [...commentQueries.all(), "byItem", itemId] as const,
+      queryFn: ({ signal }) => fetchCommentsByItem(itemId, signal),
+    }),
 };
