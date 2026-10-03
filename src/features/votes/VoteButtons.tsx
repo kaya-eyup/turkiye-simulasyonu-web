@@ -1,12 +1,11 @@
 import { useVotesDispatch } from "./votesContext";
+import { STARS } from "./votesReducer";
 import type { Stars } from "./votesReducer";
 
 type VoteButtonsProps = {
   itemId: string;
   current: Stars | undefined;
 };
-
-const STARS: Stars[] = [1, 2, 3, 4, 5];
 
 export function VoteButtons({ itemId, current }: VoteButtonsProps) {
   const dispatch = useVotesDispatch();
@@ -26,8 +25,8 @@ export function VoteButtons({ itemId, current }: VoteButtonsProps) {
             onClick={() => dispatch({ type: "voted", itemId, stars })}
             style={{
               backgroundColor:
-                current === stars ? "var(--color-primary)" : "transparent",
-              color: current === stars ? "white" : "inherit",
+                current === stars ? "var(--color-accent)" : "transparent",
+              color: current === stars ? "var(--color-on-accent)" : "inherit",
             }}
           >
             {stars}★
@@ -39,7 +38,11 @@ export function VoteButtons({ itemId, current }: VoteButtonsProps) {
         <button
           type="button"
           onClick={() => dispatch({ type: "vote_removed", itemId })}
-          style={{ marginTop: "12px", fontSize: "0.9rem", color: "red" }}
+          style={{
+            marginTop: "12px",
+            fontSize: "0.9rem",
+            color: "var(--color-danger)",
+          }}
         >
           Oyumu geri al
         </button>

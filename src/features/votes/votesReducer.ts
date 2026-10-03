@@ -28,7 +28,7 @@ export function votesReducer(state: MyVotes, action: VoteAction): MyVotes {
     }
     case "vote_removed": {
       //  Silinecek öğe zaten yoksa state'i bozma
-      if (!(action.itemId in state)) return state;
+      if (!Object.hasOwn(state, action.itemId)) return state;
 
       const newState = { ...state };
       delete newState[action.itemId];
