@@ -7,14 +7,6 @@ export function MyVotesBadge() {
   if (count === 0) return null;
 
   return (
-    <span
-      style={{
-        fontSize: "0.9rem",
-        fontWeight: "bold",
-        color: "var(--color-primary)",
-      }}
-    >
-      Oylarım ({count})
-    </span>
+    <span className="text-sm font-semibold text-tea">Oylarım ({count})</span>
   );
 }

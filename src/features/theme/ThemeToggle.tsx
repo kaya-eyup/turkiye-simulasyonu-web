@@ -9,7 +9,7 @@ export function ThemeToggle() {
       type="button"
       onClick={toggleTheme}
       aria-label={isDark ? "Açık temaya geç" : "Koyu temaya geç"}
-      className="theme-toggle-btn"
+      className="btn w-9 px-0"
     >
       {isDark ? "☀️" : "🌙"}
     </button>
