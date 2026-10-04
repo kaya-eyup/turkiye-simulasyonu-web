@@ -17,22 +17,28 @@ export function HomePage() {
 
   return (
     <div>
-      <header className="mb-12 flex items-start gap-4 sm:gap-6">
-        {/* Bayrak süs: yanındaki başlık "Türkiye" diyor, ekran okuyucu tekrar etmesin */}
-        <img
-          src={flagUrl}
-          alt=""
-          className="mt-1.5 h-10 w-auto rounded-[3px] sm:mt-2 sm:h-14"
-        />
-        <div>
-          <h1 className="font-condensed text-5xl leading-none font-bold sm:text-7xl">
+      <header className="mb-12 text-center">
+        <div className="flex items-center justify-center gap-3 sm:gap-6">
+          {/* Bayraklar süs: başlık zaten "Türkiye" diyor, ekran okuyucu tekrar etmesin.
+              İkisi de aynı yöne bakar: aynalanmış Türk bayrağı ters bayraktır. */}
+          <img
+            src={flagUrl}
+            alt=""
+            className="h-7 w-auto shrink-0 rounded-[3px] sm:h-12"
+          />
+          <h1 className="font-condensed text-4xl leading-none font-bold sm:text-7xl">
             Türkiye Simülasyonu
           </h1>
-          <p className="mt-3 max-w-[38ch] text-lg text-muted">
-            Tebrikler, Türkiye simülasyonunu tamamladınız. Geri bildiriminizi
-            bekliyoruz.
-          </p>
+          <img
+            src={flagUrl}
+            alt=""
+            className="h-7 w-auto shrink-0 rounded-[3px] sm:h-12"
+          />
         </div>
+        <p className="mx-auto mt-4 max-w-[38ch] text-lg text-muted">
+          Tebrikler, Türkiye simülasyonunu tamamladınız. Geri bildiriminizi
+          bekliyoruz.
+        </p>
       </header>
       <section aria-labelledby="categories-heading">
         <h2 id="categories-heading" className="mb-4">
