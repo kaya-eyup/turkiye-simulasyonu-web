@@ -43,6 +43,7 @@ src/
 | `GET /items?q=&page=`                    | **arama sunucuda** (bugün istemcide yapılıyor), Türkçe karakter duyarsız; `{ items, total, totalPages }` |
 | `GET /comments?itemId=`                  | yeniden eskiye sıralı                                                                                    |
 | `POST /comments`                         | gövde `{ itemId, author, body }`, `Content-Type: application/json`; 201 + oluşturulan kayıt              |
+| `GET /items/featured`                    | son 7 günde en çok yorum alan 4 öğe; hesap sunucuda (SQL GROUP BY), istemciye bütün yorumlar indirilmez  |
 
 1. Liste uç noktaları sıralı döner; sıralama ve sayfalama aynı yerde, sunucuda yapılır.
 2. `id` ve `createdAt` sunucuda üretilir (bugün `createdAt`'i istemci gönderiyor, çünkü json-server atayamıyor).

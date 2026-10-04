@@ -74,12 +74,6 @@ export function HomePage() {
           </ul>
         )}
       </section>
-
-      {/* Adım 6 için bekleyen Haftanın Seçilmişleri bölümü */}
-      <section style={{ marginTop: "3rem" }}>
-        <h2>Haftanın Seçilmişleri</h2>
-        <p>Çok yakında...</p>
-      </section>
     </div>
   );
 }
