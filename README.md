@@ -35,15 +35,17 @@ src/
 
 ## Backend sözleşmesi
 
-| Uç nokta                                 | Beklenti                                                                                                 |
-| ---------------------------------------- | -------------------------------------------------------------------------------------------------------- |
-| `GET /categories`                        | `order`'a göre sıralı                                                                                    |
-| `GET /categories/:id` · `GET /items/:id` | kayıt yoksa 404                                                                                          |
-| `GET /items?categoryId=`                 | kategorinin öğeleri                                                                                      |
-| `GET /items?q=&page=`                    | **arama sunucuda** (bugün istemcide yapılıyor), Türkçe karakter duyarsız; `{ items, total, totalPages }` |
-| `GET /comments?itemId=`                  | yeniden eskiye sıralı                                                                                    |
-| `POST /comments`                         | gövde `{ itemId, author, body }`, `Content-Type: application/json`; 201 + oluşturulan kayıt              |
-| `GET /items/featured`                    | son 7 günde en çok yorum alan 4 öğe; hesap sunucuda (SQL GROUP BY), istemciye bütün yorumlar indirilmez  |
+| Uç nokta                                 | Beklenti                                                                                                                                      |
+| ---------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| `GET /categories`                        | `order`'a göre sıralı                                                                                                                         |
+| `GET /categories/:id` · `GET /items/:id` | kayıt yoksa 404                                                                                                                               |
+| `GET /items?categoryId=`                 | kategorinin öğeleri                                                                                                                           |
+| `GET /items?q=&page=`                    | **arama sunucuda** (bugün istemcide yapılıyor), Türkçe karakter duyarsız; `{ items, total, totalPages }`                                      |
+| `GET /comments?itemId=`                  | yeniden eskiye sıralı                                                                                                                         |
+| `POST /comments`                         | gövde `{ itemId, author, body }`, `Content-Type: application/json`; 201 + oluşturulan kayıt                                                   |
+| `GET /items/featured`                    | son 7 günde en çok yorum alan 4 öğe; hesap sunucuda (SQL GROUP BY), istemciye bütün yorumlar indirilmez                                       |
+| `GET /surveys/rebirth`                   | `{ total, results: [{ country, count }] }`; çoktan aza sıralı, sayım sunucuda (SQL GROUP BY)                                                  |
+| `PUT /surveys/rebirth/my-vote`           | gövde `{ country }` (ISO 3166 alfa-2 kodu, ör. `DE`); kişi başı tek oy, sonradan değiştirilebilir; sunucu kodu geçerli listeye karşı doğrular |
 
 1. Liste uç noktaları sıralı döner; sıralama ve sayfalama aynı yerde, sunucuda yapılır.
 2. `id` ve `createdAt` sunucuda üretilir (bugün `createdAt`'i istemci gönderiyor, çünkü json-server atayamıyor).
