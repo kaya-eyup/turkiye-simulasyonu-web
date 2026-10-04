@@ -17,6 +17,7 @@ export class ConfigError extends Error {
 }
 export const API_BASE_URL = import.meta.env.VITE_API_URL;
 // Dışarıdan doğrudan çağrılmayan, ortak fetch mantığını tutan yardımcı fonksiyon
+
 async function request<T>(
   path: string,
   schema: z.ZodType<T>,
@@ -25,11 +26,8 @@ async function request<T>(
   if (!API_BASE_URL) {
     throw new ConfigError("VITE_API_URL tanımlı değil.");
   }
-  const baseUrl = import.meta.env.VITE_API_URL;
-  if (!baseUrl) {
-    throw new Error("VITE_API_URL environment variable is not defined.");
-  }
-  const response = await fetch(`${baseUrl}${path}`, init);
+
+  const response = await fetch(`${API_BASE_URL}${path}`, init);
 
   if (!response.ok) {
     throw new HttpError(
@@ -53,6 +51,9 @@ export function getJson<T>(
 
 // Hata mesajlarını kullanıcı diline çeviren yardımcı
 export function toUserMessage(err: unknown): string {
+  if (err instanceof ConfigError) {
+    return "Bu sürümde veri sunucusu bağlı değil.";
+  }
   if (err instanceof HttpError) {
     if (err.status === 404) return "Aradığınız içerik bulunamadı.";
     if (err.status >= 500)
