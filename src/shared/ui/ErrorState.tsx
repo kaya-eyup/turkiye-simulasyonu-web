@@ -6,10 +6,15 @@ interface ErrorStateProps {
 
 export function ErrorState({ message, onRetry, isRetrying }: ErrorStateProps) {
   return (
-    <div className="error-container">
-      <p>{message}</p>
-      <button onClick={onRetry} disabled={isRetrying}>
-        {isRetrying ? "Deneniyor..." : "Tekrar dene"}
+    <div role="alert" className="rounded-lg border border-line bg-surface p-4">
+      <p className="mb-3">{message}</p>
+      <button
+        type="button"
+        className="btn"
+        onClick={onRetry}
+        disabled={isRetrying}
+      >
+        {isRetrying ? "Deneniyor…" : "Tekrar dene"}
       </button>
     </div>
   );

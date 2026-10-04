@@ -36,6 +36,16 @@
     background: var(--color-page);
     color: var(--color-ink);
   }
+  /* Başlık ölçeği: Tailwind sıfırladığı için sitenin tamamında tek yerden */
+  h1 {
+    @apply font-condensed text-4xl leading-tight font-bold;
+  }
+  h2 {
+    @apply font-condensed text-2xl leading-tight font-semibold;
+  }
+  h3 {
+    @apply font-condensed text-xl leading-tight font-semibold;
+  }
   /* Klavyeyle gezenler için sitenin her yerinde aynı odak halkası */
   :focus-visible {
     outline: 2px solid var(--color-tea);
@@ -52,13 +62,6 @@
 }
 
 @layer components {
-  .summary {
-    display: -webkit-box;
-    -webkit-line-clamp: 2; /* 2 satırda kes */
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
   /* Bütün düğmelerin ortak görünüşü: tek yerden değişir */
   .btn {
     @apply inline-flex h-9 cursor-pointer items-center justify-center gap-2 rounded-md border border-line bg-surface px-3 text-sm font-medium text-ink hover:border-ink disabled:cursor-not-allowed disabled:opacity-50;
