@@ -9,41 +9,29 @@ export function RouteErrorPage() {
   }
 
   return (
-    <div role="alert" style={{ padding: "2rem", textAlign: "center" }}>
+    // Kendi boşluğu var: kök seviyede RootLayout'un <main>'i olmadan da çizilebiliyor
+    <div role="alert" className="mx-auto max-w-xl px-4 py-16">
       <h1>Bir şeyler ters gitti</h1>
-      <p style={{ marginBottom: "1.5rem" }}>
+      <p className="mt-2 mb-6 text-muted">
         Bu sayfa beklenmedik bir hatayla karşılaştı.
       </p>
 
       {/* Sadece geliştirme modunda detayları göster */}
       {import.meta.env.DEV && error instanceof Error && (
-        <pre
-          style={{
-            background: "#fee2e2",
-            color: "#991b1b",
-            padding: "1rem",
-            borderRadius: "0.5rem",
-            marginBottom: "1.5rem",
-            textAlign: "left",
-            overflowX: "auto",
-          }}
-        >
+        <pre className="mb-6 overflow-x-auto rounded-lg border border-danger p-4 text-sm text-danger">
           {error.message}
         </pre>
       )}
 
-      <div>
+      <div className="flex flex-wrap gap-2">
         <button
           type="button"
+          className="btn"
           onClick={() => window.location.reload()}
-          style={{ marginRight: "1rem", padding: "0.5rem 1rem" }}
         >
           Sayfayı yenile
         </button>
-        <Link
-          to="/"
-          style={{ padding: "0.5rem 1rem", textDecoration: "underline" }}
-        >
+        <Link to="/" className="btn">
           Anasayfaya dön
         </Link>
       </div>
