@@ -13,23 +13,32 @@ export function ItemCard({ item }: { item: ItemCardData }) {
   const { average, total } = summarize(distribution);
 
   return (
-    <Link to={`/oge/${item.id}`} className="item-card">
-      <div className="item-card-header">
-        <span className="emoji">{item.emoji}</span>
+    <Link
+      to={`/oge/${item.id}`}
+      className="flex h-full flex-col gap-2 rounded-lg border border-line bg-surface p-4 hover:border-ink"
+    >
+      <div className="flex items-center gap-2">
+        <span aria-hidden="true" className="text-2xl">
+          {item.emoji}
+        </span>
         <h3>{item.name}</h3>
       </div>
-      <p className="summary">{item.summary}</p>
+      <p className="line-clamp-2 text-sm text-muted">{item.summary}</p>
 
-      <div className="item-card-footer">
+      {/* mt-auto: kartlar aynı yükseklikteyken puan satırı hep en altta hizalanır */}
+      <p className="mt-auto pt-2 text-sm">
         {average !== null ? (
-          <span>
-            {average.toLocaleString("tr-TR", { maximumFractionDigits: 1 })} ★ (
-            {total})
-          </span>
+          <>
+            <span className="font-semibold text-tea">
+              <span aria-hidden="true">★ </span>
+              {average.toLocaleString("tr-TR", { maximumFractionDigits: 1 })}
+            </span>{" "}
+            <span className="text-muted">({total} oy)</span>
+          </>
         ) : (
-          <span>Henüz oy yok</span>
+          <span className="text-muted">Henüz oy yok</span>
         )}
-      </div>
+      </p>
     </Link>
   );
 }

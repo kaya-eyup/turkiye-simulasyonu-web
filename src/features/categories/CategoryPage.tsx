@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { slugSchema } from "../../shared/api/schemas";
 import { categoryQueries, itemQueries } from "../../shared/api/queries";
 import { NotFoundPage } from "../../shared/ui/NotFoundPage";
-import { ItemCard } from "../items/ItemCard";
+import { ItemGrid } from "../items/ItemGrid";
 import { summarize } from "../../shared/lib/rating";
 import { toUserMessage } from "../../shared/api/client";
 import { ErrorState } from "../../shared/ui/ErrorState";
@@ -27,7 +27,8 @@ function CategoryView({ slug }: { slug: string }) {
     isFetching: isItemsFetching,
   } = useQuery(itemQueries.byCategory(slug));
 
-  if (isCatPending || isItemsPending) return <p>Yükleniyor...</p>;
+  if (isCatPending || isItemsPending)
+    return <p className="text-muted">Yükleniyor...</p>;
 
   if (isCatError || isItemsError) {
     const error = catError || itemsError;
@@ -58,18 +59,19 @@ function CategoryView({ slug }: { slug: string }) {
   });
 
   return (
-    <div className="category-page">
-      <header>
+    <div>
+      <header className="mb-6">
         <h1>
-          {category.emoji} {category.name}
+          <span aria-hidden="true">{category.emoji}</span> {category.name}
         </h1>
+        <p className="mt-1 text-muted">{items.length} öğe</p>
       </header>
 
-      <div className="item-grid">
-        {sortedItems.map((item) => (
-          <ItemCard key={item.id} item={item} />
-        ))}
-      </div>
+      {sortedItems.length === 0 ? (
+        <p className="text-muted">Bu kategoride henüz öğe yok.</p>
+      ) : (
+        <ItemGrid items={sortedItems} />
+      )}
     </div>
   );
 }
