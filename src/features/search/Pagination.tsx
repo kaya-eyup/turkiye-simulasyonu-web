@@ -14,51 +14,40 @@ export function Pagination({ page, totalPages, getHref }: PaginationProps) {
   const pages = Array.from({ length: totalPages }, (_, index) => index + 1);
 
   return (
-    <nav
-      aria-label="Sayfalama"
-      style={{
-        display: "flex",
-        gap: "8px",
-        alignItems: "center",
-        marginTop: "1rem",
-      }}
-    >
-      {/* Önceki Butonu: 1. sayfadaysak Link değil Span olur (disabled mantığı) */}
+    <nav aria-label="Sayfalama" className="mt-6 flex flex-wrap gap-2">
+      {/* Önceki: 1. sayfadaysak Link değil span (gidecek yer yok) */}
       {page > 1 ? (
-        <Link to={getHref(page - 1)}>Önceki</Link>
-      ) : (
-        <span style={{ color: "var(--color-muted)", cursor: "not-allowed" }}>
+        <Link to={getHref(page - 1)} className="btn">
           Önceki
-        </span>
+        </Link>
+      ) : (
+        <span className="btn cursor-not-allowed opacity-50">Önceki</span>
       )}
 
-      {/* Sayfa Numaraları */}
-      {pages.map((p) => {
-        const isCurrentPage = p === page;
-
-        return isCurrentPage ? (
-          // Bulunduğumuz sayfa: Link değil, kalın font ve ekran okuyucu için aria-current="page"
+      {pages.map((p) =>
+        p === page ? (
+          // Bulunduğumuz sayfa: Link değil; ekran okuyucu için aria-current="page"
           <span
             key={p}
             aria-current="page"
-            style={{ fontWeight: "bold", padding: "0 4px" }}
+            className="btn min-w-9 border-ink bg-ink text-page"
           >
             {p}
           </span>
         ) : (
-          <Link key={p} to={getHref(p)} style={{ padding: "0 4px" }}>
+          <Link key={p} to={getHref(p)} className="btn min-w-9">
             {p}
           </Link>
-        );
-      })}
+        ),
+      )}
 
-      {/* Sonraki Butonu: Son sayfadaysak Link değil Span olur */}
+      {/* Sonraki: son sayfadaysak Link değil span */}
       {page < totalPages ? (
-        <Link to={getHref(page + 1)}>Sonraki</Link>
-      ) : (
-        <span style={{ color: "var(--color-muted)", cursor: "not-allowed" }}>
+        <Link to={getHref(page + 1)} className="btn">
           Sonraki
-        </span>
+        </Link>
+      ) : (
+        <span className="btn cursor-not-allowed opacity-50">Sonraki</span>
       )}
     </nav>
   );

@@ -10,7 +10,7 @@ import {
 import { useDebounce } from "../../shared/hooks/useDebounce";
 import { ErrorState } from "../../shared/ui/ErrorState";
 import { toUserMessage } from "../../shared/api/client";
-import { ItemCard } from "../items/ItemCard";
+import { ItemGrid } from "../items/ItemGrid";
 import { Pagination } from "./Pagination";
 
 export function SearchPage() {
@@ -69,57 +69,53 @@ export function SearchPage() {
     return <Navigate to={getHref(data.totalPages)} replace />;
   }
   return (
-    <div className="search-page-container">
-      <div className="search-header">
-        <input
-          aria-label="Ara"
-          type="text"
-          value={rawQ}
-          onChange={(e) => handleChange(e.target.value)}
-          placeholder="Öğe ara (Örn: Çiğ Köfte)..."
-          autoFocus
-          maxLength={MAX_QUERY_LENGTH}
-          className="search-input"
-        />
-      </div>
+    <div>
+      <input
+        aria-label="Ara"
+        type="text"
+        value={rawQ}
+        onChange={(e) => handleChange(e.target.value)}
+        placeholder="Öğe ara (Örn: Çiğ Köfte)…"
+        autoFocus
+        maxLength={MAX_QUERY_LENGTH}
+        className="mb-6 h-12 w-full rounded-md border border-line bg-surface px-4 text-lg placeholder:text-muted"
+      />
 
-      <div className="search-results">
-        {q === "" ? (
-          <p>Aramak için yazmaya başla</p>
-        ) : debouncedQ === "" ? (
-          <p>Aranıyor…</p>
-        ) : isPending ? (
-          <p>Yükleniyor...</p>
-        ) : isError ? (
-          <ErrorState
-            message={toUserMessage(error)}
-            onRetry={() => refetch()}
-            isRetrying={isFetching}
+      {q === "" ? (
+        <p className="text-muted">Aramak için yazmaya başla.</p>
+      ) : debouncedQ === "" ? (
+        <p className="text-muted">Aranıyor…</p>
+      ) : isPending ? (
+        <p className="text-muted">Yükleniyor…</p>
+      ) : isError ? (
+        <ErrorState
+          message={toUserMessage(error)}
+          onRetry={() => refetch()}
+          isRetrying={isFetching}
+        />
+      ) : data.total === 0 ? (
+        <p className="text-muted">Sonuç bulunamadı.</p>
+      ) : (
+        <>
+          <p className="mb-3 text-sm text-muted">{data.total} sonuç bulundu</p>
+          {/* Yeni sayfa gelirken eski sonuçlar soluk kalır; aria-busy ekran okuyucuya "güncelleniyor" der */}
+          <div
+            aria-busy={isPlaceholderData}
+            className={
+              isPlaceholderData
+                ? "opacity-50 transition-opacity"
+                : "transition-opacity"
+            }
+          >
+            <ItemGrid items={data.items} />
+          </div>
+          <Pagination
+            page={page}
+            totalPages={data.totalPages}
+            getHref={getHref}
           />
-        ) : data.total === 0 ? (
-          <p>Sonuç bulunamadı</p>
-        ) : (
-          <>
-            <p className="results-count">{data.total} sonuç bulundu</p>
-            <div
-              className="item-grid"
-              style={{
-                opacity: isPlaceholderData ? 0.5 : 1,
-                transition: "opacity 0.2s",
-              }}
-            >
-              {data.items.map((item) => (
-                <ItemCard key={item.id} item={item} />
-              ))}
-            </div>
-            <Pagination
-              page={page}
-              totalPages={data.totalPages}
-              getHref={getHref}
-            />
-          </>
-        )}
-      </div>
+        </>
+      )}
     </div>
   );
 }
