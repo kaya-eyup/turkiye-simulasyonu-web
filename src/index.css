@@ -36,7 +36,11 @@
     background: var(--color-page);
     color: var(--color-ink);
   }
-
+  /* Klavyeyle gezenler için sitenin her yerinde aynı odak halkası */
+  :focus-visible {
+    outline: 2px solid var(--color-tea);
+    outline-offset: 2px;
+  }
   /* GEÇİCİ köprü: bileşenler Tailwind'e taşınınca silinecek */
   :root {
     --color-bg: var(--color-page);
@@ -55,10 +59,12 @@
     overflow: hidden;
     text-overflow: ellipsis;
   }
-  /* NavLink aktifken "active" sınıfını ekler; kural olmadan görünmez */
-  nav a.active {
-    font-weight: 600;
-    text-decoration: underline;
+  /* Bütün düğmelerin ortak görünüşü: tek yerden değişir */
+  .btn {
+    @apply inline-flex h-9 cursor-pointer items-center justify-center gap-2 rounded-md border border-line bg-surface px-3 text-sm font-medium text-ink hover:border-ink disabled:cursor-not-allowed disabled:opacity-50;
+  }
+  .btn-primary {
+    @apply border-transparent bg-flag text-white hover:border-transparent hover:brightness-90;
   }
   .comment-body {
     white-space: pre-line;
