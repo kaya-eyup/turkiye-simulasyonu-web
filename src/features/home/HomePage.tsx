@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { categoryQueries } from "../../shared/api/queries";
 import { toUserMessage } from "../../shared/api/client";
 import { ErrorState } from "../../shared/ui/ErrorState";
-import flagUrl from "../../assets/flag-tr.svg";
+import flagUrl from "../../assets/tr-flag.svg";
 
 export function HomePage() {
   const {
