@@ -18,19 +18,28 @@ function ItemDetail({ item }: { item: Item }) {
   const myVote = useMyVotes()[item.id];
 
   return (
-    <article className="item-detail-container">
-      <header>
-        <div style={{ fontSize: "4rem" }}>{item.emoji}</div>
-        <h1>{item.name}</h1>
-        <CategoryLink categoryId={item.categoryId} />
+    <article>
+      <header className="mb-8">
+        <div aria-hidden="true" className="mb-2 text-6xl">
+          {item.emoji}
+        </div>
+        <h1 className="text-5xl">{item.name}</h1>
+        <div className="mt-3">
+          <CategoryLink categoryId={item.categoryId} />
+        </div>
+        <p className="mt-4 max-w-prose text-lg text-muted">{item.summary}</p>
       </header>
 
-      <p className="item-summary">{item.summary}</p>
+      {/* Geniş ekranda dağılım solda, oy düğmeleri sağda; telefonda alt alta */}
+      <div className="grid gap-4 md:grid-cols-[3fr_2fr]">
+        <section className="rounded-lg border border-line bg-surface p-5">
+          <RatingBars distribution={distribution} />
+        </section>
+        <section className="rounded-lg border border-line bg-surface p-5">
+          <VoteButtons itemId={item.id} current={myVote} />
+        </section>
+      </div>
 
-      <section className="item-ratings">
-        <RatingBars distribution={distribution} />
-        <VoteButtons itemId={item.id} current={myVote} />
-      </section>
       <CommentSection itemId={item.id} />
     </article>
   );
@@ -46,7 +55,7 @@ function ItemView({ id }: { id: string }) {
     isFetching,
   } = useQuery(itemQueries.detail(id));
 
-  if (isPending) return <p>Yükleniyor...</p>;
+  if (isPending) return <p>Yükleniyor…</p>;
 
   if (isError) {
     return (
