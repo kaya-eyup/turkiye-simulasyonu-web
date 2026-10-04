@@ -6,6 +6,7 @@
       "emoji": "🍽️",
       "order": 1
     },
+
     { "id": "sehir-ilce", "name": "Şehir/İlçe", "emoji": "🏙️", "order": 2 },
     {
       "id": "adet-gelenekler",
