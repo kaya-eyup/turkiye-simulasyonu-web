@@ -12,6 +12,9 @@ import { useAddComment } from "./useAddComment";
 type Field = keyof CommentFormValues;
 
 const EMPTY: CommentFormValues = { author: "", body: "" };
+// İki alanın ortak görünüşü; hatalıyken kenarlık aria-invalid'den kırmızıya döner
+const fieldClass =
+  "w-full rounded-md border border-line bg-page px-3 py-2 aria-[invalid=true]:border-danger";
 const UNTOUCHED: Record<Field, boolean> = { author: false, body: false };
 
 export function CommentForm({ itemId }: { itemId: string }) {
@@ -77,17 +80,12 @@ export function CommentForm({ itemId }: { itemId: string }) {
     <form
       onSubmit={handleSubmit}
       noValidate
-      style={{
-        marginBottom: "2rem",
-        display: "flex",
-        flexDirection: "column",
-        gap: "1rem",
-      }}
+      className="mb-8 flex flex-col gap-4 rounded-lg border border-line bg-surface p-5"
     >
       <div>
         <label
           htmlFor={`${id}-author`}
-          style={{ display: "block", marginBottom: "0.25rem" }}
+          className="mb-1 block text-sm font-medium"
         >
           İsim (isteğe bağlı)
         </label>
@@ -100,17 +98,10 @@ export function CommentForm({ itemId }: { itemId: string }) {
           maxLength={AUTHOR_MAX}
           aria-invalid={authorError !== undefined}
           aria-describedby={authorError ? `${id}-author-error` : undefined}
-          style={{ width: "100%", padding: "0.5rem" }}
+          className={fieldClass}
         />
         {authorError && (
-          <p
-            id={`${id}-author-error`}
-            style={{
-              color: "var(--color-danger)",
-              margin: "0.25rem 0 0 0",
-              fontSize: "0.875rem",
-            }}
-          >
+          <p id={`${id}-author-error`} className="mt-1 text-sm text-danger">
             {authorError}
           </p>
         )}
@@ -119,7 +110,7 @@ export function CommentForm({ itemId }: { itemId: string }) {
       <div>
         <label
           htmlFor={`${id}-body`}
-          style={{ display: "block", marginBottom: "0.25rem" }}
+          className="mb-1 block text-sm font-medium"
         >
           Yorum
         </label>
@@ -133,34 +124,23 @@ export function CommentForm({ itemId }: { itemId: string }) {
           aria-invalid={bodyError !== undefined}
           aria-describedby={bodyError ? `${id}-body-error` : undefined}
           rows={4}
-          style={{ width: "100%", padding: "0.5rem" }}
+          className={`${fieldClass} resize-y`}
         />
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            marginTop: "0.25rem",
-            fontSize: "0.875rem",
-          }}
-        >
-          {bodyError ? (
-            <p
-              id={`${id}-body-error`}
-              style={{ color: "var(--color-danger)", margin: 0 }}
-            >
+        <div className="mt-1 flex gap-4 text-sm">
+          {bodyError && (
+            <p id={`${id}-body-error`} className="text-danger">
               {bodyError}
             </p>
-          ) : (
-            <span /> /* Boş bırakıldığında flex hizalamasını bozmamak için */
           )}
-          <span style={{ color: "var(--color-muted)" }}>
+          {/* ml-auto: hata olsa da olmasa da sayaç hep sağda */}
+          <span className="ml-auto text-muted tabular-nums">
             {values.body.length}/{BODY_MAX}
           </span>
         </div>
       </div>
 
       {addComment.isError && (
-        <p style={{ color: "var(--color-danger)", fontWeight: "bold" }}>
+        <p role="alert" className="text-sm font-medium text-danger">
           {toUserMessage(addComment.error)}
         </p>
       )}
@@ -168,7 +148,7 @@ export function CommentForm({ itemId }: { itemId: string }) {
       <button
         type="submit"
         disabled={addComment.isPending}
-        style={{ alignSelf: "flex-start", padding: "0.5rem 1rem" }}
+        className="btn btn-primary self-start"
       >
         {addComment.isPending ? "Gönderiliyor…" : "Gönder"}
       </button>

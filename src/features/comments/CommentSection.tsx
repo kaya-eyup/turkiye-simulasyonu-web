@@ -6,8 +6,10 @@ interface CommentSectionProps {
 
 export function CommentSection({ itemId }: CommentSectionProps) {
   return (
-    <section aria-labelledby="comments-heading" style={{ marginTop: "3rem" }}>
-      <h2 id="comments-heading">Yorumlar</h2>
+    <section aria-labelledby="comments-heading" className="mt-12">
+      <h2 id="comments-heading" className="mb-4">
+        Yorumlar
+      </h2>
       <CommentForm itemId={itemId} />
       <CommentList itemId={itemId} />
     </section>
