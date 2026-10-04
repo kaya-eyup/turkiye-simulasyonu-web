@@ -55,7 +55,7 @@ function ItemView({ id }: { id: string }) {
     isFetching,
   } = useQuery(itemQueries.detail(id));
 
-  if (isPending) return <p>Yükleniyor…</p>;
+  if (isPending) return <p className="text-muted">Yükleniyor…</p>;
 
   if (isError) {
     return (

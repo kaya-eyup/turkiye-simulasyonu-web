@@ -51,14 +51,6 @@
     outline: 2px solid var(--color-tea);
     outline-offset: 2px;
   }
-  /* GEÇİCİ köprü: bileşenler Tailwind'e taşınınca silinecek */
-  :root {
-    --color-bg: var(--color-page);
-    --color-text: var(--color-ink);
-    --color-border: var(--color-line);
-    --color-accent: var(--color-tea);
-    --color-on-accent: var(--color-on-tea);
-  }
 }
 
 @layer components {
@@ -68,9 +60,5 @@
   }
   .btn-primary {
     @apply border-transparent bg-flag text-white hover:border-transparent hover:brightness-90;
-  }
-  .comment-body {
-    white-space: pre-line;
-    overflow-wrap: anywhere;
   }
 }
