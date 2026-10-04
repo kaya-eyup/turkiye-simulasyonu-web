@@ -13,21 +13,46 @@ export function NavBar() {
 
   return (
     <nav className="sticky top-0 z-10 border-b border-line bg-page">
-      <div className="mx-auto flex max-w-5xl flex-wrap items-center gap-x-6 gap-y-3 px-4 py-3">
+      {/* Geniş ekranda 3 sütun: [1fr | auto | 1fr]. Yan sütunlar eşit genişlikte olduğu için
+          ortadaki arama, logo ve sağ grubun genişliğinden bağımsız olarak tam ortada durur.
+          Telefonda 2 sütun: üst satırda logo ve sağ grup, alt satırda tam genişlik arama. */}
+      <div className="mx-auto grid max-w-5xl grid-cols-[1fr_auto] items-center gap-x-4 gap-y-3 px-4 py-3 sm:grid-cols-[1fr_auto_1fr]">
         {/* Sol: plaka logo; site adı sadece geniş ekranda */}
         <Link
           to="/"
           aria-label="Türkiye Simülasyonu, anasayfa"
-          className="flex items-center gap-3"
+          className="flex items-center gap-3 justify-self-start"
         >
           <PlateLogo />
-          <span className="hidden font-condensed text-lg font-semibold sm:inline">
+          <span className="hidden font-condensed text-lg font-semibold lg:inline">
             Türkiye Simülasyonu
           </span>
         </Link>
 
-        {/* Sağ: Hakkında, oylarım, tema */}
-        <div className="ml-auto flex items-center gap-4">
+        {/* Orta: arama. DOM sırası geniş ekrandaki görsel sırayla aynı: Tab da soldan sağa gider */}
+        {!onSearchPage && (
+          <Form
+            action="/ara"
+            role="search"
+            className="col-span-2 row-start-2 flex gap-2 sm:col-span-1 sm:col-start-2 sm:row-start-1 sm:w-72 lg:w-80"
+          >
+            <input
+              type="search"
+              name={SEARCH_PARAMS.query}
+              aria-label="Ara"
+              required
+              maxLength={MAX_QUERY_LENGTH}
+              placeholder="Neyi merak ediyorsun?"
+              className="h-9 w-full min-w-0 rounded-md border border-line bg-surface px-3 text-sm placeholder:text-muted"
+            />
+            <button type="submit" className="btn">
+              Ara
+            </button>
+          </Form>
+        )}
+
+        {/* Sağ: oylarım, Hakkında, tema */}
+        <div className="col-start-2 row-start-1 flex items-center gap-4 justify-self-end sm:col-start-3">
           <MyVotesBadge />
           <NavLink
             to="/hakkinda"
@@ -41,28 +66,6 @@ export function NavBar() {
           </NavLink>
           <ThemeToggle />
         </div>
-
-        {/* Arama: telefonda ikinci satırda tam genişlik, geniş ekranda ortada */}
-        {!onSearchPage && (
-          <Form
-            action="/ara"
-            role="search"
-            className="order-last flex w-full gap-2 sm:order-none sm:w-auto sm:flex-1 sm:justify-center"
-          >
-            <input
-              type="search"
-              name={SEARCH_PARAMS.query}
-              aria-label="Ara"
-              required
-              maxLength={MAX_QUERY_LENGTH}
-              placeholder="Neyi merak ediyorsun?"
-              className="h-9 w-full min-w-0 rounded-md border border-line bg-surface px-3 text-sm placeholder:text-muted sm:max-w-xs"
-            />
-            <button type="submit" className="btn">
-              Ara
-            </button>
-          </Form>
-        )}
       </div>
     </nav>
   );

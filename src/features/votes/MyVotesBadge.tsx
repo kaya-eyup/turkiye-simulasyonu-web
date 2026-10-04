@@ -7,6 +7,8 @@ export function MyVotesBadge() {
   if (count === 0) return null;
 
   return (
-    <span className="text-sm font-semibold text-tea">Oylarım ({count})</span>
+    <span className="hidden text-sm font-semibold text-tea lg:inline">
+      Oylarım ({count})
+    </span>
   );
 }
