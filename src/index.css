@@ -1,48 +1,67 @@
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
+@import "tailwindcss";
 
-:root {
-  color-scheme: light dark;
-  --color-bg: light-dark(#ffffff, #121212);
-  --color-text: light-dark(#1a1a1a, #e8e8e8);
-  --color-muted: light-dark(#6b6b6b, #9a9a9a);
-  --color-border: light-dark(#d4d4d4, #3a3a3a);
-  --color-track: light-dark(#eeeeee, #2a2a2a);
+/* dark: varyantı işletim sistemine değil, ThemeToggle'ın yazdığı data-theme'e bağlı */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+/* Tasarım token'ları: her biri bir Tailwind sınıfı üretir (bg-page, text-ink, font-condensed...) */
+@theme {
+  --font-sans: "Barlow", ui-sans-serif, system-ui, sans-serif;
+  --font-condensed: "Barlow Condensed", "Barlow", ui-sans-serif, sans-serif;
+
+  --color-page: light-dark(#f2f3ef, #121a2b);
+  --color-surface: light-dark(#ffffff, #1a2438);
+  --color-ink: light-dark(#1e1d1b, #ecede8);
+  --color-muted: light-dark(#5e6360, #a3aab5);
+  --color-line: light-dark(#d5d8d2, #2c3850);
+  --color-track: light-dark(#e6e8e3, #243049);
   --color-danger: light-dark(#b91c1c, #f87171);
-  --color-accent: #f59e0b;
-  --color-on-accent: #1a1a1a;
-  font-family: system-ui, "Segoe UI", Roboto, sans-serif;
-  line-height: 1.5;
-}
-:root[data-theme="light"] {
-  color-scheme: light;
-}
-:root[data-theme="dark"] {
-  color-scheme: dark;
+  --color-tea: light-dark(#a63a12, #e07a45);
+  --color-on-tea: light-dark(#ffffff, #121a2b);
+  --color-flag: #e30a17;
+  --color-plate: #003399;
 }
 
-body {
-  margin: 0;
-  background: var(--color-bg);
-  color: var(--color-text);
+@layer base {
+  :root {
+    color-scheme: light dark;
+  }
+  :root[data-theme="light"] {
+    color-scheme: light;
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+  }
+
+  body {
+    background: var(--color-page);
+    color: var(--color-ink);
+  }
+
+  /* GEÇİCİ köprü: bileşenler Tailwind'e taşınınca silinecek */
+  :root {
+    --color-bg: var(--color-page);
+    --color-text: var(--color-ink);
+    --color-border: var(--color-line);
+    --color-accent: var(--color-tea);
+    --color-on-accent: var(--color-on-tea);
+  }
 }
 
-.summary {
-  display: -webkit-box;
-  -webkit-line-clamp: 2; /* 2 satırda kes */
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-/* NavLink aktifken "active" sınıfını ekler; kural olmadan görünmez */
-nav a.active {
-  font-weight: 600;
-  text-decoration: underline;
-}
-.comment-body {
-  white-space: pre-line;
-  overflow-wrap: anywhere;
+@layer components {
+  .summary {
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* 2 satırda kes */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  /* NavLink aktifken "active" sınıfını ekler; kural olmadan görünmez */
+  nav a.active {
+    font-weight: 600;
+    text-decoration: underline;
+  }
+  .comment-body {
+    white-space: pre-line;
+    overflow-wrap: anywhere;
+  }
 }
