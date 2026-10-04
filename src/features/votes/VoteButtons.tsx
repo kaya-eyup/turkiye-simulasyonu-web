@@ -11,25 +11,23 @@ export function VoteButtons({ itemId, current }: VoteButtonsProps) {
   const dispatch = useVotesDispatch();
 
   return (
-    <div role="group" aria-label="Puanın" style={{ marginTop: "1.5rem" }}>
-      <div style={{ marginBottom: "8px", fontWeight: "bold" }}>
-        {current ? `Senin oyun: ${current}★` : "Henüz oy vermedin"}
-      </div>
+    <div role="group" aria-label="Puanın">
+      <h2 className="mb-3 text-xl">Senin puanın</h2>
+      <p className="mb-3 text-sm text-muted">
+        {current ? `Oyun: ${current} ★` : "Henüz oy vermedin."}
+      </p>
 
-      <div style={{ display: "flex", gap: "8px" }}>
+      <div className="flex flex-wrap gap-2">
         {STARS.map((stars) => (
           <button
             key={stars}
             type="button"
             aria-pressed={current === stars}
             onClick={() => dispatch({ type: "voted", itemId, stars })}
-            style={{
-              backgroundColor:
-                current === stars ? "var(--color-accent)" : "transparent",
-              color: current === stars ? "var(--color-on-accent)" : "inherit",
-            }}
+            // Görünüş aria-pressed'den türüyor: ekran okuyucunun duyduğuyla gözün gördüğü ayrışamaz
+            className="btn min-w-12 aria-pressed:border-tea aria-pressed:bg-tea aria-pressed:text-on-tea"
           >
-            {stars}★
+            {stars} ★
           </button>
         ))}
       </div>
@@ -38,11 +36,7 @@ export function VoteButtons({ itemId, current }: VoteButtonsProps) {
         <button
           type="button"
           onClick={() => dispatch({ type: "vote_removed", itemId })}
-          style={{
-            marginTop: "12px",
-            fontSize: "0.9rem",
-            color: "var(--color-danger)",
-          }}
+          className="mt-4 cursor-pointer text-sm text-danger underline-offset-4 hover:underline"
         >
           Oyumu geri al
         </button>
