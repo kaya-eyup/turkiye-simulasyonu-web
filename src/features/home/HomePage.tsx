@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { categoryQueries } from "../../shared/api/queries";
 import { toUserMessage } from "../../shared/api/client";
 import { ErrorState } from "../../shared/ui/ErrorState";
+import flagUrl from "../../assets/flag-tr.svg";
 
 export function HomePage() {
   const {
@@ -15,10 +16,24 @@ export function HomePage() {
   } = useQuery(categoryQueries.list());
 
   return (
-    <div className="home-page">
-      <h1>Türkiye Simülasyonu</h1>
-      <p>Hoş geldin! Bir kategori seçerek başla:</p>
-
+    <div>
+      <header className="mb-12 flex items-start gap-4 sm:gap-6">
+        {/* Bayrak süs: yanındaki başlık "Türkiye" diyor, ekran okuyucu tekrar etmesin */}
+        <img
+          src={flagUrl}
+          alt=""
+          className="mt-1.5 h-10 w-auto rounded-[3px] sm:mt-2 sm:h-14"
+        />
+        <div>
+          <h1 className="font-condensed text-5xl leading-none font-bold sm:text-7xl">
+            Türkiye Simülasyonu
+          </h1>
+          <p className="mt-3 max-w-[38ch] text-lg text-muted">
+            Tebrikler, Türkiye simülasyonunu tamamladınız. Geri bildiriminizi
+            bekliyoruz.
+          </p>
+        </div>
+      </header>
       <section
         aria-labelledby="categories-heading"
         style={{ marginTop: "2rem" }}
