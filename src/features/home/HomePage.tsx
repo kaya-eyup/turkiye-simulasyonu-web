@@ -34,10 +34,7 @@ export function HomePage() {
           </p>
         </div>
       </header>
-      <section
-        aria-labelledby="categories-heading"
-        style={{ marginTop: "2rem" }}
-      >
+      <section aria-labelledby="categories-heading">
         <h2 id="categories-heading" className="mb-4">
           Kategoriler
         </h2>

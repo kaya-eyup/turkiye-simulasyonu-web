@@ -28,7 +28,7 @@ function CategoryView({ slug }: { slug: string }) {
   } = useQuery(itemQueries.byCategory(slug));
 
   if (isCatPending || isItemsPending)
-    return <p className="text-muted">Yükleniyor...</p>;
+    return <p className="text-muted">Yükleniyor…</p>;
 
   if (isCatError || isItemsError) {
     const error = catError || itemsError;
