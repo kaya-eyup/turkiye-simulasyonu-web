@@ -4,6 +4,18 @@ Türkiye'ye özgü yemekleri, şehirleri, adetleri ve absürtlükleri puanlama v
 
 ## Çalıştırma
 
+Veri [turkiye-simulasyonu-api](https://github.com/kaya-eyup/turkiye-simulasyonu-api)'den gelir; iki program aynı anda açık olmalı.
+
+1. **API:** Visual Studio'da `https` profiliyle F5 (ya da `dotnet run --launch-profile https`) → `https://localhost:7129`
+2. **Web:**
+
+```
+   npm install
+   npm run dev   # http://localhost:5173
+```
+
+API kapalıysa veri sayfaları "Sunucuya ulaşılamadı" gösterir. API'nin CORS izin listesinde yalnızca `http://localhost:5173` var; sayfa başka bir adresten (ör. `http://127.0.0.1:5173`) açılırsa istekler tarayıcıda engellenir.
+
 ```
 npm install
 npm run dev:all   # API (json-server) :3000 + web (Vite) :5173
@@ -15,8 +27,7 @@ Kontroller: `npm run typecheck` · `npm run lint` · `npm run format:check` · `
 
 ## Canlı sürüm
 
-https://turkiye-simulasyonu-web.vercel.app — **veri sunucusu henüz bağlı değil.** Geliştirmede veri json-server'dan gelir; canlıda `VITE_API_URL` tanımlı olmadığı için sayfalar demo uyarısı gösterir. ASP.NET Core backend'i bağlandığında değişen tek şey bu değişken olacak.
-
+https://turkiye-simulasyonu-web.vercel.app — **Geliştirmede veri yerel ASP.NET Core API’den gelir.**
 Bilinçli karar: canlı sürüm için statik JSON adaptörü yazılmadı. Backend birkaç hafta içinde geleceği için adaptör sadece silinmek için yaşayacaktı.
 
 ## Yapı
@@ -48,7 +59,7 @@ src/
 | `PUT /surveys/rebirth/my-vote`           | gövde `{ country }` (ISO 3166 alfa-2 kodu, ör. `DE`); kişi başı tek oy, sonradan değiştirilebilir; sunucu kodu geçerli listeye karşı doğrular |
 
 1. Liste uç noktaları sıralı döner; sıralama ve sayfalama aynı yerde, sunucuda yapılır.
-2. `id` ve `createdAt` sunucuda üretilir (bugün `createdAt`'i istemci gönderiyor, çünkü json-server atayamıyor).
+2. `id` ve `createdAt` sunucuda üretilir (bugün createdAt’i istemci de gönderiyor; POST /comments API’de yazılınca kaldırılacak).
 3. POST, oluşturulan kaydı döndürür.
 4. Doğrulama sunucuda tekrar yapılır: `author` en fazla 30 karakter (boşsa "anonim"), `body` kırpıldıktan sonra 3-500 karakter.
 5. Oylar: `votes(userId, itemId, score)` + `(userId, itemId)` tekillik kısıtı; dağılım `UPDATE ... SET n = n + 1` ile artırılır (bugünkü okuma-değiştirme-yazma yarışını ortadan kaldırır). Kullanıcı girişi gerektirir.
