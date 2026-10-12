@@ -18,11 +18,7 @@ export async function fetchCommentsByItem(
   signal?: AbortSignal,
 ): Promise<ItemComment[]> {
   const encoded = encodeURIComponent(itemId);
-  return getJson(
-    `/comments?itemId=${encoded}&_sort=-createdAt`,
-    commentListSchema,
-    signal,
-  );
+  return getJson(`/comments?itemId=${encoded}`, commentListSchema, signal);
 }
 
 export async function fetchCategory(
@@ -114,5 +110,5 @@ export async function postComment(input: NewComment): Promise<ItemComment> {
 }
 
 export const fetchCategories = async (signal?: AbortSignal) => {
-  return getJson("/categories?_sort=order", categoryListSchema, signal);
+  return getJson("/categories", categoryListSchema, signal);
 };
