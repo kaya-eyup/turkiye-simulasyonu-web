@@ -9,10 +9,8 @@
     "typecheck": "tsc -b",
     "lint": "eslint .",
     "preview": "vite preview",
-    "api": "json-server db/db.json --port 3000",
     "format": "prettier --write .",
-    "format:check": "prettier --check .",
-    "dev:all": "concurrently -n api,web -c blue,green \"npm:api\" \"npm:dev\""
+    "format:check": "prettier --check ."
   },
   "engines": {
     "node": ">=22.22.0"
@@ -34,12 +32,10 @@
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.7",
     "@vitejs/plugin-react": "^6.1.1",
-    "concurrently": "^10.0.5",
     "eslint": "^10.10.0",
     "eslint-plugin-react-hooks": "^7.1.1",
     "eslint-plugin-react-refresh": "^0.5.6",
     "globals": "^17.12.0",
-    "json-server": "^1.0.0-beta.15",
     "prettier": "^3.9.9",
     "prettier-plugin-tailwindcss": "^0.8.1",
     "tailwindcss": "^4.3.3",
