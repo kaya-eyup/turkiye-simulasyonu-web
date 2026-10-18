@@ -48,7 +48,7 @@ src/
 | `PUT /surveys/rebirth/my-vote`           | gövde `{ country }` (ISO 3166 alfa-2 kodu, ör. `DE`); kişi başı tek oy, sonradan değiştirilebilir; sunucu kodu geçerli listeye karşı doğrular |
 
 1. Liste uç noktaları sıralı döner; sıralama ve sayfalama aynı yerde, sunucuda yapılır.
-2. `id` ve `createdAt` sunucuda üretilir (bugün `createdAt`'i istemci de gönderiyor; `POST /comments` API'de yazılınca kaldırılacak).
+2. `id` ve `createdAt` sunucuda üretilir.
 3. POST, oluşturulan kaydı döndürür.
 4. Doğrulama sunucuda tekrar yapılır: `author` en fazla 30 karakter (boşsa "anonim"), `body` kırpıldıktan sonra 3-500 karakter.
 5. Oylar: `votes(userId, itemId, score)` + `(userId, itemId)` tekillik kısıtı; dağılım `UPDATE ... SET n = n + 1` ile artırılır (bugünkü okuma-değiştirme-yazma yarışını ortadan kaldırır). Kullanıcı girişi gerektirir.
