@@ -102,7 +102,7 @@ export async function searchItems(
 export type NewComment = Pick<ItemComment, "itemId" | "author" | "body">;
 
 export async function postComment(input: NewComment): Promise<ItemComment> {
-  return postJson("/comments", { input }, commentSchema);
+  return postJson("/comments", input, commentSchema);
 }
 
 export const fetchCategories = async (signal?: AbortSignal) => {
