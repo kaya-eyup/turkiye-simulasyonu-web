@@ -9,15 +9,19 @@ Veri [turkiye-simulasyonu-api](https://github.com/kaya-eyup/turkiye-simulasyonu-
 1. **API:** Visual Studio'da `https` profiliyle F5 (ya da `dotnet run --launch-profile https`) → `https://localhost:7129`
 2. **Web:** `npm install`, ardından `npm run dev` → `http://localhost:5173`
 
-API kapalıysa veri sayfaları "Sunucuya ulaşılamadı" gösterir. API'nin CORS izin listesinde yalnızca `http://localhost:5173` var; sayfa başka bir adresten (ör. `http://127.0.0.1:5173`) açılırsa istekler tarayıcıda engellenir.
+API kapalıysa veri sayfaları "Sunucuya ulaşılamadı" gösterir. Geliştirmede API'nin CORS izin listesinde yalnızca `http://localhost:5173` var; sayfa başka bir adresten (ör. `http://127.0.0.1:5173`) açılırsa istekler tarayıcıda engellenir.
 
 Kontroller: `npm run typecheck` · `npm run lint` · `npm run format:check` · `npm run build` (build, `tsc -b` geçmeden çalışmaz).
 
 ## Canlı sürüm
 
-https://turkiye-simulasyonu-web.vercel.app — **veri sunucusu henüz bağlı değil.** Geliştirmede veri yerel ASP.NET Core API'den gelir; canlıda `VITE_API_URL` tanımlı olmadığı için sayfalar demo uyarısı gösterir. ASP.NET Core backend'i bağlandığında değişen tek şey bu değişken olacak.
+https://turkiye-simulasyonu-web.vercel.app — veri canlı API'den gelir: https://turkiye-simulasyonu-api.runasp.net ([turkiye-simulasyonu-api](https://github.com/kaya-eyup/turkiye-simulasyonu-api)).
 
-Bilinçli karar: canlı sürüm için statik JSON adaptörü yazılmadı. Backend birkaç hafta içinde geleceği için adaptör sadece silinmek için yaşayacaktı.
+- Vercel'de `VITE_API_URL` yalnızca Production ortamında tanımlı. Vite bu değeri derleme anında JS dosyasına yazar; tarayıcı Vercel'in ayarlarını okumaz. Değer değişirse yeniden derleme (Redeploy) gerekir.
+- Önizleme (Preview) dağıtımlarında değişken yok ve API'nin CORS izni yalnızca ana adreste; önizlemeler "veri sunucusu bağlı değil" uyarısı gösterir.
+- API ücretsiz bir sunucuda: Bir süre istek gelmeyince uyuyor, uzun bir aradan sonraki ilk sayfa yavaş açılabilir.
+
+Geçmiş karar: Backend gelene kadar canlı sürüm için statik JSON adaptörü yazılmadı; site o süre demo uyarısı gösterdi. Adaptör sadece silinmek için yaşayacaktı.
 
 ## Yapı
 
