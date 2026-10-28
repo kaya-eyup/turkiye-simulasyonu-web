@@ -56,6 +56,10 @@ export function toUserMessage(err: unknown): string {
   }
   if (err instanceof HttpError) {
     if (err.status === 404) return "Aradığınız içerik bulunamadı.";
+    if (err.status === 400)
+      return "Gönderdiğin bilgilerde bir sorun var, alanları kontrol et.";
+    if (err.status === 429)
+      return "Çok fazla istek gönderdin, biraz bekleyip tekrar dene.";
     if (err.status >= 500)
       return "Sunucuda bir hata oluştu, lütfen daha sonra tekrar deneyin.";
     return `Beklenmeyen bir hata oluştu (Kod: ${err.status}).`;
