@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { categoryQueries } from "../../shared/api/queries";
 import { toUserMessage } from "../../shared/api/client";
 import { ErrorState } from "../../shared/ui/ErrorState";
+import { FeaturedSection } from "./FeaturedSection";
 import flagUrl from "../../assets/tr-flag.svg";
 
 export function HomePage() {
@@ -40,10 +41,14 @@ export function HomePage() {
           bekliyoruz.
         </p>
       </header>
+
+      <FeaturedSection />
+
       <section aria-labelledby="categories-heading">
-        <h2 id="categories-heading" className="mb-4">
-          Kategoriler
-        </h2>
+        <h2 id="categories-heading">Kategoriler</h2>
+        <p className="mt-1 mb-4 text-sm text-muted">
+          Simülasyonun ana modülleri. Hiçbiri kapatılamaz.
+        </p>
 
         {isPending && <p className="text-muted">Kategoriler yükleniyor…</p>}
 
@@ -63,11 +68,15 @@ export function HomePage() {
           <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
             {categories.map((c) => (
               <li key={c.id}>
+                {/* group: emoji, kartın tamamının üstüne gelindiğinde büyüsün */}
                 <Link
                   to={`/kategori/${c.id}`}
-                  className="flex h-full flex-col gap-3 rounded-lg border border-line bg-surface p-4 hover:border-ink"
+                  className="group flex h-full flex-col items-center justify-center gap-3 rounded-xl border border-line bg-surface px-4 py-7 text-center transition hover:border-ink"
                 >
-                  <span aria-hidden="true" className="text-3xl">
+                  <span
+                    aria-hidden="true"
+                    className="flex size-16 items-center justify-center rounded-full bg-track text-4xl transition-transform group-hover:scale-110"
+                  >
                     {c.emoji}
                   </span>
                   <span className="font-condensed text-xl leading-tight font-semibold">
