@@ -64,6 +64,12 @@ export async function fetchItem(
   }
 }
 
+export async function fetchFeaturedItems(
+  signal?: AbortSignal,
+): Promise<Item[]> {
+  return getJson("/items/featured", itemListSchema, signal);
+}
+
 export async function searchItems(
   { q, page }: { q: string; page: number },
   signal?: AbortSignal,
