@@ -1,5 +1,5 @@
 # Türkiye Simülasyonu
-
+[![CI](https://github.com/kaya-eyup/turkiye-simulasyonu-web/actions/workflows/ci.yml/badge.svg)](https://github.com/kaya-eyup/turkiye-simulasyonu-web/actions/workflows/ci.yml)
 **Canlı:** https://turkiyesimulasyonu.eyupkaya.com · **API:** [turkiye-simulasyonu-api](https://github.com/kaya-eyup/turkiye-simulasyonu-api)
 
 Türkiye'ye özgü yemekleri, şehirleri, adetleri ve absürtlükleri puanlama ve yorumlama platformu. React + TypeScript + Vite; veri katmanında TanStack Query ve zod.
