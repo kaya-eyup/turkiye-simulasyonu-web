@@ -40,28 +40,28 @@ src/
 ```
 
 - Sunucuya giden tek kapı `shared/api/client.ts` (`request` → `getJson` / `postJson`); her yanıt zod'dan geçer.
-- Sunucu verisi TanStack Query'de; arama ve sayfa numarası URL'de (`?q=`, `?page=`); tema ve "benim oylarım" context + localStorage'da.
+- Sunucu verisi TanStack Query'de; arama ve sayfa numarası URL'de (`?q=`, `?sayfa=`); tema ve "benim oylarım" context + localStorage'da.
 - Oylar istemcide tutulur ve sunucudaki dağılımın üstüne bindirilir; sunucuya yazılmaz.
 - Sayfa seviyesinde hata ekranı: bir sayfa çökerse NavBar ayakta kalır.
 
 ## Backend sözleşmesi
 
-| Uç nokta                                 | Beklenti                                                                                                                                      | Durum                 |
-| ---------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- | --------------------- |
-| `GET /categories`                        | `order`'a göre sıralı                                                                                                                         | Hazır                 |
-| `GET /categories/:id` · `GET /items/:id` | kayıt yoksa 404                                                                                                                               | Hazır                 |
-| `GET /items?categoryId=`                 | kategorinin öğeleri                                                                                                                           | Hazır                 |
-| `GET /items?q=&page=`                    | **arama sunucuda** (bugün istemcide yapılıyor), Türkçe karakter duyarsız; `{ items, total, totalPages }`                                      | Yok (arama istemcide) |
-| `GET /comments?itemId=`                  | yeniden eskiye sıralı                                                                                                                         | Hazır                 |
-| `POST /comments`                         | gövde `{ itemId, author, body }`, `Content-Type: application/json`; 201 + oluşturulan kayıt                                                   | Hazır                 |
-| `GET /items/featured`                    | son 7 günde en çok yorum alan 4 öğe; hesap sunucuda (SQL GROUP BY), istemciye bütün yorumlar indirilmez                                       | Hazır                 |
-| `GET /surveys/rebirth`                   | `{ total, results: [{ country, count }] }`; çoktan aza sıralı, sayım sunucuda (SQL GROUP BY)                                                  | Yok                   |
-| `PUT /surveys/rebirth/my-vote`           | gövde `{ country }` (ISO 3166 alfa-2 kodu, ör. `DE`); kişi başı tek oy, sonradan değiştirilebilir; sunucu kodu geçerli listeye karşı doğrular | Yok                   |
+| Uç nokta                                 | Beklenti                                                                                                                                                                                                                | Durum |
+| ---------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----- |
+| `GET /categories`                        | `order`'a göre sıralı                                                                                                                                                                                                   | Hazır |
+| `GET /categories/:id` · `GET /items/:id` | kayıt yoksa 404                                                                                                                                                                                                         | Hazır |
+| `GET /items?categoryId=`                 | kategorinin öğeleri                                                                                                                                                                                                     | Hazır |
+| `GET /items/search?q=&page=`             | arama sunucuda, Türkçe karakter duyarsız; `{ items, total, totalPages }`, sayfa başına 12 öğe _(adres `/items`'tan ayrıldı: `/items` sayfalanmamış tam liste dönüyor, aynı uçtan iki farklı gövde şekli dönmesin diye)_ | Hazır |
+| `GET /comments?itemId=`                  | yeniden eskiye sıralı                                                                                                                                                                                                   | Hazır |
+| `POST /comments`                         | gövde `{ itemId, author, body }`, `Content-Type: application/json`; 201 + oluşturulan kayıt                                                                                                                             | Hazır |
+| `GET /items/featured`                    | son 7 günde en çok yorum alan 4 öğe; hesap sunucuda (SQL GROUP BY), istemciye bütün yorumlar indirilmez                                                                                                                 | Hazır |
+| `GET /surveys/rebirth`                   | `{ total, results: [{ country, count }] }`; çoktan aza sıralı, sayım sunucuda (SQL GROUP BY)                                                                                                                            | Yok   |
+| `PUT /surveys/rebirth/my-vote`           | gövde `{ country }` (ISO 3166 alfa-2 kodu, ör. `DE`); kişi başı tek oy, sonradan değiştirilebilir; sunucu kodu geçerli listeye karşı doğrular                                                                           | Yok   |
 
 1. Liste uç noktaları sıralı döner; sıralama ve sayfalama aynı yerde, sunucuda yapılır.
 2. `id` ve `createdAt` sunucuda üretilir.
 3. POST, oluşturulan kaydı döndürür.
-4. Doğrulama sunucuda tekrar yapılır: `author` en fazla 30 karakter (boşsa "anonim"), `body` kırpıldıktan sonra 3-500 karakter. _Durum: API'de uzunluk doğrulaması ve "anonim" dönüşümü henüz yok, bkz. API'nin borçları._
+4. Doğrulama sunucuda tekrar yapılır: `author` en fazla 30 karakter (boşsa "anonim"), `body` kırpıldıktan sonra 3-500 karakter.
 5. Oylar: `votes(userId, itemId, score)` + `(userId, itemId)` tekillik kısıtı; dağılım `UPDATE ... SET n = n + 1` ile artırılır (bugünkü okuma-değiştirme-yazma yarışını ortadan kaldırır). Kullanıcı girişi gerektirir. _Durum: yok._
 
 ## Bilinçli borçlar
