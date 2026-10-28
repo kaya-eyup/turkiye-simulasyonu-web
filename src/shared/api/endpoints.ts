@@ -6,12 +6,13 @@ import {
 } from "./schemas";
 import type { Category, Item } from "./schemas";
 import { getJson, HttpError } from "./client";
-import { normalizeForSearch } from "../lib/normalize";
-import { commentListSchema, commentSchema } from "./schemas";
-import type { ItemComment } from "./schemas";
+import {
+  commentListSchema,
+  commentSchema,
+  searchResultSchema,
+} from "./schemas";
+import type { ItemComment, SearchResult } from "./schemas";
 import { postJson } from "./client";
-export const PAGE_SIZE = 5;
-export type SearchResult = { items: Item[]; total: number; totalPages: number };
 
 export async function fetchCommentsByItem(
   itemId: string,
@@ -63,41 +64,18 @@ export async function fetchItem(
   }
 }
 
-export async function fetchAllItems(signal?: AbortSignal): Promise<Item[]> {
-  return getJson("/items", itemListSchema, signal);
-}
-
 export async function searchItems(
   { q, page }: { q: string; page: number },
   signal?: AbortSignal,
 ): Promise<SearchResult> {
+  // Boş aramada sunucuya gitmeye gerek yok
   if (!q) {
     return { items: [], total: 0, totalPages: 0 };
   }
 
-  const allItems = await fetchAllItems(signal);
-
-  const normalizedQuery = normalizeForSearch(q);
-
-  const filteredItems = allItems.filter(
-    (item) =>
-      normalizeForSearch(item.name).includes(normalizedQuery) ||
-      normalizeForSearch(item.summary).includes(normalizedQuery),
-  );
-
-  const total = filteredItems.length;
-  const totalPages = Math.ceil(total / PAGE_SIZE);
-
-  const startIndex = (page - 1) * PAGE_SIZE;
-  const endIndex = startIndex + PAGE_SIZE;
-
-  const paginatedItems = filteredItems.slice(startIndex, endIndex);
-
-  return {
-    items: paginatedItems,
-    total,
-    totalPages,
-  };
+  // URLSearchParams kaçış işlemini kendisi yapar (boşluk, Türkçe harf, & işareti)
+  const params = new URLSearchParams({ q, page: String(page) });
+  return getJson(`/items/search?${params}`, searchResultSchema, signal);
 }
 export type NewComment = Pick<ItemComment, "itemId" | "author" | "body">;
 

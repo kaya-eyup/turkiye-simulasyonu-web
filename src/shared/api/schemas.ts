@@ -46,3 +46,10 @@ export type Item = z.infer<typeof itemSchema>;
 
 export const itemListSchema = z.array(itemSchema);
 export const categoryListSchema = z.array(categorySchema);
+export const searchResultSchema = z.object({
+  items: itemListSchema,
+  total: z.number().int().nonnegative(),
+  totalPages: z.number().int().nonnegative(),
+});
+
+export type SearchResult = z.infer<typeof searchResultSchema>;
