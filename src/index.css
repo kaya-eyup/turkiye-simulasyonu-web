@@ -19,6 +19,13 @@
   --color-on-tea: light-dark(#ffffff, #121a2b);
   --color-flag: #e30a17;
   --color-plate: #003399;
+  /* "Twemoji Country Flags" sadece bayrak karakterlerini kapsar (unicode-range);
+     yalnızca Windows'taki Chromium'da yüklenir (main.tsx). Diğer harflere dokunmaz. */
+  --font-sans:
+    "Twemoji Country Flags", "Barlow", ui-sans-serif, system-ui, sans-serif;
+  --font-condensed:
+    "Twemoji Country Flags", "Barlow Condensed", "Barlow", ui-sans-serif,
+    sans-serif;
 }
 
 @layer base {
