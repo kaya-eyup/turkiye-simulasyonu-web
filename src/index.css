@@ -26,6 +26,23 @@
   --font-condensed:
     "Twemoji Country Flags", "Barlow Condensed", "Barlow", ui-sans-serif,
     sans-serif;
+
+  /* Anket grafiğinin dilim renkleri: birbirinden kolay ayrılan 5 renk, sırayla.
+     Türkiye her zaman --color-flag, "Diğer" her zaman gri. */
+  --color-series-1: light-dark(#2a78d6, #3987e5);
+  --color-series-2: light-dark(#eb6834, #d95926);
+  --color-series-3: light-dark(#1baf7a, #199e70);
+  --color-series-4: light-dark(#eda100, #c98500);
+  --color-series-5: light-dark(#6250d6, #9085e9);
+  --color-series-other: light-dark(#b4b2a9, #5f5e5a);
+
+  /* Dilimler açılışta kendi başlangıç noktasından büyüyerek gelir */
+  --animate-slice-grow: slice-grow 700ms ease-out both;
+  @keyframes slice-grow {
+    from {
+      stroke-dasharray: 0 1000;
+    }
+  }
 }
 
 @layer base {
