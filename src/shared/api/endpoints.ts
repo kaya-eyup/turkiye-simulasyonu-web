@@ -12,7 +12,10 @@ import {
   searchResultSchema,
 } from "./schemas";
 import type { ItemComment, SearchResult } from "./schemas";
-import { postJson } from "./client";
+import { postJson, putJson } from "./client";
+import { rebirthResultsSchema, rebirthVoteSchema } from "./schemas";
+import type { RebirthResults, RebirthVote } from "./schemas";
+import { getVoterId } from "../lib/voterId";
 
 export async function fetchCommentsByItem(
   itemId: string,
@@ -92,3 +95,42 @@ export async function postComment(input: NewComment): Promise<ItemComment> {
 export const fetchCategories = async (signal?: AbortSignal) => {
   return getJson("/categories", categoryListSchema, signal);
 };
+
+// Kimlik sadece anketin uçlarına gider, her isteğe değil: gerekmeyen yerde
+// tarayıcıyı tanımlayan bir değer göndermiyoruz.
+// Giriş geldiğinde bu başlığın yerini Authorization alacak.
+const voterHeader = () => ({ "X-Voter-Id": getVoterId() });
+
+export async function fetchRebirthResults(
+  signal?: AbortSignal,
+): Promise<RebirthResults> {
+  return getJson("/surveys/rebirth", rebirthResultsSchema, signal);
+}
+
+export async function fetchMyRebirthVote(
+  signal?: AbortSignal,
+): Promise<RebirthVote | null> {
+  try {
+    return await getJson(
+      "/surveys/rebirth/my-vote",
+      rebirthVoteSchema,
+      signal,
+      voterHeader(),
+    );
+  } catch (error) {
+    // 404 = bu tarayıcı henüz oy vermedi; hata değil, bir durum
+    if (error instanceof HttpError && error.status === 404) {
+      return null;
+    }
+    throw error;
+  }
+}
+
+export async function putMyRebirthVote(country: string): Promise<RebirthVote> {
+  return putJson(
+    "/surveys/rebirth/my-vote",
+    { country },
+    rebirthVoteSchema,
+    voterHeader(),
+  );
+}

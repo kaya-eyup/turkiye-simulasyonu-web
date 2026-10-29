@@ -45,8 +45,9 @@ export function getJson<T>(
   path: string,
   schema: z.ZodType<T>,
   signal?: AbortSignal,
+  headers?: Record<string, string>,
 ) {
-  return request(path, schema, { signal });
+  return request(path, schema, { signal, headers });
 }
 
 // Hata mesajlarını kullanıcı diline çeviren yardımcı
@@ -73,10 +74,30 @@ export function toUserMessage(err: unknown): string {
   return "Bilinmeyen bir hata oluştu.";
 }
 
-export function postJson<T>(path: string, body: unknown, schema: z.ZodType<T>) {
+// Gövdeli isteklerin ortak kalıbı: POST ve PUT yalnızca metot adında ayrışıyor
+function sendJson<T>(
+  method: "POST" | "PUT",
+  path: string,
+  body: unknown,
+  schema: z.ZodType<T>,
+  headers?: Record<string, string>,
+) {
   return request(path, schema, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
+    method,
+    headers: { "Content-Type": "application/json", ...headers },
     body: JSON.stringify(body),
   });
+}
+
+export function postJson<T>(path: string, body: unknown, schema: z.ZodType<T>) {
+  return sendJson("POST", path, body, schema);
+}
+
+export function putJson<T>(
+  path: string,
+  body: unknown,
+  schema: z.ZodType<T>,
+  headers?: Record<string, string>,
+) {
+  return sendJson("PUT", path, body, schema, headers);
 }
