@@ -1,7 +1,7 @@
 import { Link } from "react-router";
 import { flagEmoji } from "../survey/countries";
 
-const TEASER_FLAGS = ["JP", "CA", "CH", "NO", "TR"] as const;
+const TEASER_FLAGS = ["DE", "MX", "TH", "AF", "TR"] as const;
 
 export function SurveyTeaser() {
   return (
@@ -21,7 +21,7 @@ export function SurveyTeaser() {
         </span>
         <div className="flex-1">
           <h2 id="survey-teaser-heading">
-            Bir sonraki hayatında nerede doğardın?
+            Bir sonraki hayatında nerede doğmak istersin?
           </h2>
           <span className="mt-1 block text-muted">
             Simülasyonu yeniden başlatma hakkın olsaydı… Oyunu ver, sonuçları

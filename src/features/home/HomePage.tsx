@@ -36,8 +36,8 @@ export function HomePage() {
           />
         </div>
         <p className="mx-auto mt-4 max-w-[38ch] text-lg text-muted">
-          Tebrikler, Türkiye simülasyonunu tamamladınız. Geri bildiriminizi
-          bekliyoruz.
+          Tebrikler! Türkiye simülasyonunu başarıyla tamamladınız.
+          Deneyimlerinizi iyileştirmek için geri bildirimlerinizi bekliyoruz.
         </p>
       </header>
 
