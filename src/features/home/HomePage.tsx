@@ -5,6 +5,7 @@ import { toUserMessage } from "../../shared/api/client";
 import { ErrorState } from "../../shared/ui/ErrorState";
 import { FeaturedSection } from "./FeaturedSection";
 import flagUrl from "../../assets/tr-flag.svg";
+import { SurveyTeaser } from "./SurveyTeaser";
 
 export function HomePage() {
   const {
@@ -20,8 +21,6 @@ export function HomePage() {
     <div>
       <header className="mb-12 text-center">
         <div className="flex items-center justify-center gap-3 sm:gap-6">
-          {/* Bayraklar süs: başlık zaten "Türkiye" diyor, ekran okuyucu tekrar etmesin.
-              İkisi de aynı yöne bakar: aynalanmış Türk bayrağı ters bayraktır. */}
           <img
             src={flagUrl}
             alt=""
@@ -88,6 +87,7 @@ export function HomePage() {
           </ul>
         )}
       </section>
+      <SurveyTeaser />
     </div>
   );
 }
