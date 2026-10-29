@@ -5,9 +5,6 @@
 
 /* Tasarım token'ları: her biri bir Tailwind sınıfı üretir (bg-page, text-ink, font-condensed...) */
 @theme {
-  --font-sans: "Barlow", ui-sans-serif, system-ui, sans-serif;
-  --font-condensed: "Barlow Condensed", "Barlow", ui-sans-serif, sans-serif;
-
   --color-page: light-dark(#f2f3ef, #121a2b);
   --color-surface: light-dark(#ffffff, #1a2438);
   --color-ink: light-dark(#1e1d1b, #ecede8);

@@ -26,21 +26,6 @@ export const AboutPage = () => {
           arayüz
         </a>{" "}
         ·{" "}
-        <p className="mt-4">
-          Öneri ve geri bildirimlerini{" "}
-          <a href="mailto:iletisim@eyupkaya.com" className={linkClass}>
-            e-posta
-          </a>{" "}
-          ile gönderebilirsin. Geliştirici:{" "}
-          <a
-            href="https://www.linkedin.com/in/eyupkaya-dev/"
-            target="_blank"
-            rel="noreferrer"
-            className={linkClass}
-          >
-            Eyüp Kaya, LinkedIn
-          </a>
-        </p>
         <a
           href="https://github.com/kaya-eyup/turkiye-simulasyonu-api"
           target="_blank"
@@ -48,6 +33,21 @@ export const AboutPage = () => {
           className={linkClass}
         >
           sunucu
+        </a>
+      </p>
+      <p className="mt-4">
+        Öneri ve geri bildirimlerini{" "}
+        <a href="mailto:iletisim@eyupkaya.com" className={linkClass}>
+          e-posta
+        </a>{" "}
+        ile gönderebilirsin. Geliştirici:{" "}
+        <a
+          href="https://www.linkedin.com/in/eyupkaya-dev/"
+          target="_blank"
+          rel="noreferrer"
+          className={linkClass}
+        >
+          Eyüp Kaya, LinkedIn
         </a>
       </p>
     </div>

@@ -1,7 +1,4 @@
 import { StrictMode } from "react";
-// Windows'taki Chrome/Edge bayrak emojisi çizemez, "TR" gibi harf gösterir.
-// Tarayıcı çizemiyorsa sadece bayrakları içeren küçük bir yazı tipi ekler; çizebiliyorsa hiçbir şey yapmaz.
-polyfillCountryFlagEmojis("Twemoji Country Flags", flagFontUrl);
 import { createRoot } from "react-dom/client";
 import "@fontsource/barlow/400.css";
 import "@fontsource/barlow/500.css";
@@ -19,6 +16,10 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { queryClient } from "./app/queryClient";
 import { ThemeProvider } from "./features/theme/ThemeProvider";
 import { VotesProvider } from "./features/votes/VotesProvider";
+
+// Windows'taki Chrome/Edge bayrak emojisi çizemez, "TR" gibi harf gösterir.
+// Tarayıcı çizemiyorsa sadece bayrakları içeren küçük bir yazı tipi ekler; çizebiliyorsa hiçbir şey yapmaz.
+polyfillCountryFlagEmojis("Twemoji Country Flags", flagFontUrl);
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>

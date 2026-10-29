@@ -1,7 +1,7 @@
 import { Link } from "react-router";
 import { flagEmoji } from "../survey/countries";
 
-const TEASER_FLAGS = ["DE", "MX", "TH", "AF", "TR"] as const;
+const TEASER_FLAGS = ["IN", "BR", "TH", "DE", "TR"] as const;
 
 export function SurveyTeaser() {
   return (
