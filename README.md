@@ -35,13 +35,16 @@ Geçmiş karar: Backend gelene kadar canlı sürüm için statik JSON adaptörü
 ```
 src/
   app/        router, layout, query client
-  features/   categories, items, search, comments, votes, theme, home, about
+  features/   categories, items, search, comments, votes, survey, theme, home, about
   shared/     api (client, endpoints, queries, schemas), hooks, lib, ui
 ```
 
-- Sunucuya giden tek kapı `shared/api/client.ts` (`request` → `getJson` / `postJson`); her yanıt zod'dan geçer.
+- Sunucuya giden tek kapı `shared/api/client.ts` (`request` → `getJson / postJson / putJson`); her yanıt zod'dan geçer.
 - Sunucu verisi TanStack Query'de; arama ve sayfa numarası URL'de (`?q=`, `?sayfa=`); tema ve "benim oylarım" context + localStorage'da.
-- Oylar istemcide tutulur ve sunucudaki dağılımın üstüne bindirilir; sunucuya yazılmaz.
+- Öğe oyları istemcide tutulur ve sunucudaki dağılımın üstüne bindirilir; sunucuya yazılmaz.
+- Anket oyları sunucuda. Tarayıcı ilk ziyarette `crypto.randomUUID()` ile bir kimlik üretip localStorage'da saklar (`tsim:voter-id:v1`) ve sadece anket isteklerine `X-Voter-Id` başlığıyla ekler. Sonuçlar oy vermeden gösterilmez.
+- Bayraklar emoji: `"TR"` → 🇹🇷. Windows'taki Chrome/Edge bayrak emojisi çizemediği için `country-flag-emoji-polyfill` yalnızca o tarayıcılarda bayrak yazı tipini (78 KB, sitenin kendi dosyası, CDN değil) yükler. Ülke adları `Intl.DisplayNames` ile Türkçe, sıralama `Intl.Collator("tr")` ile.
+- Anket grafiği kütüphanesiz SVG: dilim başına bir `<circle>` (`stroke-dasharray`). Renkler sıraya göre; ülkeyi renk değil bayrak tanıtır (en çok oy alan bayrakların çoğu kırmızı-beyaz). Türkiye her zaman bayrak kırmızısı ve ilk 5'te olmasa da kendi sırasıyla görünür.
 - Sayfa seviyesinde hata ekranı: bir sayfa çökerse NavBar ayakta kalır.
 
 ## Backend sözleşmesi
@@ -54,9 +57,10 @@ src/
 | `GET /items/search?q=&page=`             | arama sunucuda, Türkçe karakter duyarsız; `{ items, total, totalPages }`, sayfa başına 12 öğe _(adres `/items`'tan ayrıldı: `/items` sayfalanmamış tam liste dönüyor, aynı uçtan iki farklı gövde şekli dönmesin diye)_ | Hazır |
 | `GET /comments?itemId=`                  | yeniden eskiye sıralı                                                                                                                                                                                                   | Hazır |
 | `POST /comments`                         | gövde `{ itemId, author, body }`, `Content-Type: application/json`; 201 + oluşturulan kayıt                                                                                                                             | Hazır |
-| `GET /items/featured`                    | her zaman 5 öğe: son 7 günde en çok yorum alanlar, eksik kalırsa rastgele dolgu; hesap sunucuda (SQL GROUP BY), istemciye bütün yorumlar indirilmez                                                                     | Hazır |
-| `GET /surveys/rebirth`                   | `{ total, results: [{ country, count }] }`; çoktan aza sıralı, sayım sunucuda (SQL GROUP BY)                                                                                                                            | Yok   |
-| `PUT /surveys/rebirth/my-vote`           | gövde `{ country }` (ISO 3166 alfa-2 kodu, ör. `DE`); kişi başı tek oy, sonradan değiştirilebilir; sunucu kodu geçerli listeye karşı doğrular                                                                           | Yok   |
+| `GET /items/featured`                    | her zaman 5 öğe: bu takvim haftası yorum almış öğelerden haftalık sabit bir seçki, eksik kalırsa rastgele dolgu; hesap sunucuda, istemciye bütün yorumlar indirilmez                                                    | Hazır |
+| `GET /surveys/rebirth`                   | `{ total, results: [{ country, count }] }`; çoktan aza sıralı, sayım sunucuda (SQL GROUP BY)                                                                                                                            | Hazır |
+| `GET /surveys/rebirth/my-vote`           | `X-Voter-Id` başlığıyla; 200 + `{ country }`, henüz oy yoksa 404                                                                                                                                                        | Hazır |
+| `PUT /surveys/rebirth/my-vote`           | gövde `{ country }` (ISO 3166 alfa-2 kodu, ör. `DE`), `X-Voter-Id` başlığıyla; tarayıcı başına tek oy, sonradan değiştirilebilir; sunucu kodu geçerli listeye karşı doğrular                                            | Hazır |
 
 1. Liste uç noktaları sıralı döner; sıralama ve sayfalama aynı yerde, sunucuda yapılır.
 2. `id` ve `createdAt` sunucuda üretilir.
@@ -66,8 +70,10 @@ src/
 
 ## Bilinçli borçlar
 
-- Öğe `id`'si slug: ad değişirse linkler kırılır. Gerçek veritabanında değişmeyen bir anahtar + ayrı `slug` sütunu.
-- Oylar sadece tarayıcıda; tekrar oy vermeyi arayüz engeller, sunucu engellemez.
+- Adreslerde öğe slug'ı kullanılıyor: API'de tablolar arası bağlar değişmeyen sayı anahtarına kurulu, ama slug düzeltilirse eski linkler 404 olur. Gerçek çözüm eski slug'dan yenisine yönlendirme.
+- Öğe oyları sadece tarayıcıda; tekrar oy vermeyi arayüz engeller, sunucu engellemez.
+- Anket kimliği anonim: Tarayıcı verisini silen biri tekrar oy verebilir. Giriş gelince oy kullanıcıya bağlanacak.
+- Anket ülke listesi (249 kod) API'deki listenin kopyası; biri değişirse diğeri elle güncellenmeli. Geçersiz kodu yine de sunucu reddeder.
 - Kategori sayfası sıralaması ham ortalamayla, oy katmanı hesaba katılmıyor.
 - Test yok. İlk adaylar: `votesReducer`, `applyMyVote`, `summarize`, `storage`, `toUserMessage`.
 - Hata ekranı sayfa seviyesinde; tek bir kart çökünce bütün sayfa hata gösterir.
