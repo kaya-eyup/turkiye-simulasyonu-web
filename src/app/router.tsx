@@ -7,6 +7,8 @@ import { AboutPage } from "../features/about/AboutPage";
 import { NotFoundPage } from "../shared/ui/NotFoundPage";
 import { SearchPage } from "../features/search/SearchPage";
 import { RouteErrorPage } from "../shared/ui/RouteErrorPage";
+import { RebirthSurveyPage } from "../features/survey/RebirthSurveyPage";
+
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -22,6 +24,7 @@ export const router = createBrowserRouter([
           { path: "oge/:id", element: <ItemPage /> },
           { path: "hakkinda", element: <AboutPage /> },
           { path: "ara", element: <SearchPage /> },
+          { path: "anket", element: <RebirthSurveyPage /> },
           { path: "*", element: <NotFoundPage /> },
         ],
       },

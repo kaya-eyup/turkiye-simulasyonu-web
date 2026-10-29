@@ -7,6 +7,11 @@ import { ThemeToggle } from "../../features/theme/ThemeToggle";
 import { MyVotesBadge } from "../../features/votes/MyVotesBadge";
 import { PlateLogo } from "./PlateLogo";
 
+const navLinkClass = ({ isActive }: { isActive: boolean }) =>
+  isActive
+    ? "font-semibold underline underline-offset-4"
+    : "hover:underline hover:underline-offset-4";
+
 export function NavBar() {
   // Şu anda /ara sayfasında mıyız? (URL eşleşmiyorsa null döner)
   const onSearchPage = useMatch("/ara") !== null;
@@ -51,17 +56,13 @@ export function NavBar() {
           </Form>
         )}
 
-        {/* Sağ: oylarım, Hakkında, tema */}
+        {/* Sağ: oylarım, Anket, Hakkında, tema */}
         <div className="col-start-2 row-start-1 flex items-center gap-4 justify-self-end sm:col-start-3">
           <MyVotesBadge />
-          <NavLink
-            to="/hakkinda"
-            className={({ isActive }) =>
-              isActive
-                ? "font-semibold underline underline-offset-4"
-                : "hover:underline hover:underline-offset-4"
-            }
-          >
+          <NavLink to="/anket" className={navLinkClass}>
+            Anket
+          </NavLink>
+          <NavLink to="/hakkinda" className={navLinkClass}>
             Hakkında
           </NavLink>
           <ThemeToggle />
