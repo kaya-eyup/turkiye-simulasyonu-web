@@ -1,8 +1,10 @@
-import { useMyVotes } from "./votesContext";
+import { useQuery } from "@tanstack/react-query";
+import { itemVoteQueries } from "../../shared/api/queries";
 
 export function MyVotesBadge() {
-  const votes = useMyVotes();
-  const count = Object.keys(votes).length;
+  // Sunucu hata verirse ya da henüz gelmediyse rozet görünmez: sayı yanlış görünmesindense hiç görünmesin
+  const { data } = useQuery(itemVoteQueries.mine());
+  const count = data?.length ?? 0;
 
   if (count === 0) return null;
 

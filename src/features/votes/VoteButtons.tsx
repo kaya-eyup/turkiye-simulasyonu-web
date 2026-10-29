@@ -1,20 +1,24 @@
-import { useVotesDispatch } from "./votesContext";
-import { STARS } from "./votesReducer";
-import type { Stars } from "./votesReducer";
+import { toUserMessage } from "../../shared/api/client";
+import { STARS } from "../../shared/api/schemas";
+import { useMyItemVote } from "./useMyItemVote";
 
-type VoteButtonsProps = {
-  itemId: string;
-  current: Stars | undefined;
-};
+export function VoteButtons({ itemId }: { itemId: string }) {
+  const { current, isLoading, vote, isVoting, voteError } =
+    useMyItemVote(itemId);
 
-export function VoteButtons({ itemId, current }: VoteButtonsProps) {
-  const dispatch = useVotesDispatch();
+  // Oy bilinmeden düğmeler açılmaz: hangisinin seçili olduğu görünmeden
+  // tıklanırsa kullanıcı var olan oyunu farkında olmadan değiştirebilir
+  const disabled = isLoading || isVoting;
 
   return (
     <div role="group" aria-label="Puanın">
       <h2 className="mb-3 text-xl">Senin puanın</h2>
       <p className="mb-3 text-sm text-muted">
-        {current ? `Oyun: ${current} ★` : "Henüz oy vermedin."}
+        {isLoading
+          ? "Oyun okunuyor…"
+          : current
+            ? `Oyun: ${current} ★`
+            : "Henüz oy vermedin."}
       </p>
 
       <div className="flex flex-wrap gap-2">
@@ -22,8 +26,9 @@ export function VoteButtons({ itemId, current }: VoteButtonsProps) {
           <button
             key={stars}
             type="button"
+            disabled={disabled}
             aria-pressed={current === stars}
-            onClick={() => dispatch({ type: "voted", itemId, stars })}
+            onClick={() => vote(stars)}
             // Görünüş aria-pressed'den türüyor: ekran okuyucunun duyduğuyla gözün gördüğü ayrışamaz
             className="btn min-w-12 aria-pressed:border-tea aria-pressed:bg-tea aria-pressed:text-on-tea"
           >
@@ -35,11 +40,20 @@ export function VoteButtons({ itemId, current }: VoteButtonsProps) {
       {current && (
         <button
           type="button"
-          onClick={() => dispatch({ type: "vote_removed", itemId })}
-          className="mt-4 cursor-pointer text-sm text-danger underline-offset-4 hover:underline"
+          disabled={disabled}
+          onClick={() => vote(null)}
+          className="mt-4 cursor-pointer text-sm text-danger underline-offset-4 hover:underline disabled:cursor-default disabled:no-underline disabled:opacity-60"
         >
           Oyumu geri al
         </button>
+      )}
+
+      {isVoting && <p className="mt-3 text-sm text-muted">Gönderiliyor…</p>}
+
+      {voteError && (
+        <p role="alert" className="mt-3 text-sm font-medium text-danger">
+          {toUserMessage(voteError)}
+        </p>
       )}
     </div>
   );
