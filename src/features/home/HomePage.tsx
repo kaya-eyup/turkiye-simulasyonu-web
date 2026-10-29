@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { categoryQueries } from "../../shared/api/queries";
 import { toUserMessage } from "../../shared/api/client";
 import { ErrorState } from "../../shared/ui/ErrorState";
+import { SectionHeader } from "../../shared/ui/SectionHeader";
 import { FeaturedSection } from "./FeaturedSection";
 import flagUrl from "../../assets/tr-flag.svg";
 import { SurveyTeaser } from "./SurveyTeaser";
@@ -35,19 +36,25 @@ export function HomePage() {
             className="h-7 w-auto shrink-0 rounded-[3px] sm:h-12"
           />
         </div>
-        <p className="mx-auto mt-4 max-w-[38ch] text-lg text-muted">
-          Tebrikler! Türkiye simülasyonunu başarıyla tamamladınız.
-          Deneyimlerinizi iyileştirmek için geri bildirimlerinizi bekliyoruz.
+        {/* Her cümle kendi satırında: "block" ile zorlanıyor, dar ekranda cümle içinde kendiliğinden kırılıyor */}
+        <p className="mx-auto mt-4 max-w-[70ch] text-lg text-muted">
+          <span className="block">
+            Tebrikler! Türkiye simülasyonunu başarıyla tamamladınız.
+          </span>
+          <span className="block">
+            Deneyimlerinizi iyileştirmek için geri bildirimlerinizi bekliyoruz.
+          </span>
         </p>
       </header>
 
       <FeaturedSection />
 
-      <section aria-labelledby="categories-heading">
-        <h2 id="categories-heading">Kategoriler</h2>
-        <p className="mt-1 mb-4 text-sm text-muted">
-          Simülasyonun ana modülleri. Hiçbiri kapatılamaz.
-        </p>
+      <section aria-labelledby="categories-heading" className="py-8 sm:py-10">
+        <SectionHeader
+          id="categories-heading"
+          title="Kategoriler"
+          description="Simülasyonun ana modülleri. Hiçbiri kapatılamaz."
+        />
 
         {isPending && <p className="text-muted">Kategoriler yükleniyor…</p>}
 
