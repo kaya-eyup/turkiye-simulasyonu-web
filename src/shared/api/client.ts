@@ -18,11 +18,9 @@ export class ConfigError extends Error {
 export const API_BASE_URL = import.meta.env.VITE_API_URL;
 // Dışarıdan doğrudan çağrılmayan, ortak fetch mantığını tutan yardımcı fonksiyon
 
-async function request<T>(
-  path: string,
-  schema: z.ZodType<T>,
-  init?: RequestInit,
-): Promise<T> {
+// Adres, ayar ve hata kontrolü burada; gövdeyi okumak çağırana kalıyor.
+// Ayrı durmasının sebebi: her cevapta JSON yok (DELETE 204 ile gövdesiz döner).
+async function send(path: string, init?: RequestInit): Promise<Response> {
   if (!API_BASE_URL) {
     throw new ConfigError("VITE_API_URL tanımlı değil.");
   }
@@ -36,6 +34,15 @@ async function request<T>(
     );
   }
 
+  return response;
+}
+
+async function request<T>(
+  path: string,
+  schema: z.ZodType<T>,
+  init?: RequestInit,
+): Promise<T> {
+  const response = await send(path, init);
   const data = await response.json();
   // Zod, gelen veri şemaya uymazsa ZodError fırlatır.
   return schema.parse(data);
@@ -100,4 +107,12 @@ export function putJson<T>(
   headers?: Record<string, string>,
 ) {
   return sendJson("PUT", path, body, schema, headers);
+}
+
+// Silme isteği 204 döner: gövde yok, ayrıştırılacak JSON da yok, şema da gerekmiyor
+export async function deleteResource(
+  path: string,
+  headers?: Record<string, string>,
+): Promise<void> {
+  await send(path, { method: "DELETE", headers });
 }

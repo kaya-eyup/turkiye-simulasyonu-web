@@ -73,3 +73,18 @@ export type RebirthResults = z.infer<typeof rebirthResultsSchema>;
 export const rebirthVoteSchema = z.object({ country: countryCodeSchema });
 
 export type RebirthVote = z.infer<typeof rebirthVoteSchema>;
+
+// Puan aralığı sözleşmenin parçası: sunucu da 1-5 dışını reddediyor.
+// Dizi değişirse hem şema hem tip hem de ekrandaki düğmeler onunla birlikte değişir.
+export const STARS = [1, 2, 3, 4, 5] as const;
+export const starsSchema = z.literal(STARS);
+export type Stars = z.infer<typeof starsSchema>;
+
+export const itemVoteSchema = z.object({
+  itemId: slugSchema,
+  stars: starsSchema,
+});
+
+export const itemVoteListSchema = z.array(itemVoteSchema);
+
+export type ItemVote = z.infer<typeof itemVoteSchema>;

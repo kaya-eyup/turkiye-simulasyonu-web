@@ -1,20 +1,33 @@
 import {
-  categorySchema,
-  itemSchema,
-  itemListSchema,
-  categoryListSchema,
-} from "./schemas";
-import type { Category, Item } from "./schemas";
-import { getJson, HttpError } from "./client";
+  deleteResource,
+  getJson,
+  HttpError,
+  postJson,
+  putJson,
+} from "./client";
 import {
+  categoryListSchema,
+  categorySchema,
   commentListSchema,
   commentSchema,
+  itemListSchema,
+  itemSchema,
+  itemVoteListSchema,
+  itemVoteSchema,
+  rebirthResultsSchema,
+  rebirthVoteSchema,
   searchResultSchema,
 } from "./schemas";
-import type { ItemComment, SearchResult } from "./schemas";
-import { postJson, putJson } from "./client";
-import { rebirthResultsSchema, rebirthVoteSchema } from "./schemas";
-import type { RebirthResults, RebirthVote } from "./schemas";
+import type {
+  Category,
+  Item,
+  ItemComment,
+  ItemVote,
+  RebirthResults,
+  RebirthVote,
+  SearchResult,
+  Stars,
+} from "./schemas";
 import { getVoterId } from "../lib/voterId";
 
 export async function fetchCommentsByItem(
@@ -96,8 +109,9 @@ export const fetchCategories = async (signal?: AbortSignal) => {
   return getJson("/categories", categoryListSchema, signal);
 };
 
-// Kimlik sadece anketin uçlarına gider, her isteğe değil: gerekmeyen yerde
-// tarayıcıyı tanımlayan bir değer göndermiyoruz.
+// Kimlik sadece oy uçlarına gider, her isteğe değil: gerekmeyen yerde
+// tarayıcıyı tanımlayan bir değer göndermiyoruz. Kategori ve öğe listeleri
+// herkese aynı cevabı döndüğü için bu başlığı taşımıyor.
 // Giriş geldiğinde bu başlığın yerini Authorization alacak.
 const voterHeader = () => ({ "X-Voter-Id": getVoterId() });
 
@@ -133,4 +147,29 @@ export async function putMyRebirthVote(country: string): Promise<RebirthVote> {
     rebirthVoteSchema,
     voterHeader(),
   );
+}
+
+export async function fetchMyItemVotes(
+  signal?: AbortSignal,
+): Promise<ItemVote[]> {
+  // Tek istekte bu tarayıcının bütün oyları; her kart kendi oyunu ayrıca sormuyor
+  return getJson("/items/my-votes", itemVoteListSchema, signal, voterHeader());
+}
+
+export async function putMyItemVote(
+  itemId: string,
+  stars: Stars,
+): Promise<ItemVote> {
+  const encoded = encodeURIComponent(itemId);
+  return putJson(
+    `/items/${encoded}/my-vote`,
+    { stars },
+    itemVoteSchema,
+    voterHeader(),
+  );
+}
+
+export async function deleteMyItemVote(itemId: string): Promise<void> {
+  const encoded = encodeURIComponent(itemId);
+  return deleteResource(`/items/${encoded}/my-vote`, voterHeader());
 }

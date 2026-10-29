@@ -7,6 +7,7 @@ import {
   fetchCategories,
   fetchCategory,
   fetchFeaturedItems,
+  fetchMyItemVotes,
   fetchMyRebirthVote,
   fetchRebirthResults,
 } from "./endpoints";
@@ -78,5 +79,16 @@ export const surveyQueries = {
     queryOptions({
       queryKey: [...surveyQueries.all(), "myVote"] as const,
       queryFn: ({ signal }) => fetchMyRebirthVote(signal),
+    }),
+};
+
+export const itemVoteQueries = {
+  all: () => ["itemVotes"] as const,
+  // Anahtar: ["itemVotes", "mine"]. NavBar hep ekranda olduğu için bu sorgu
+  // her sayfada canlı; öğe sayfası ve rozet aynı önbellekten okuyor.
+  mine: () =>
+    queryOptions({
+      queryKey: [...itemVoteQueries.all(), "mine"] as const,
+      queryFn: ({ signal }) => fetchMyItemVotes(signal),
     }),
 };
