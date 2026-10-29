@@ -53,3 +53,23 @@ export const searchResultSchema = z.object({
 });
 
 export type SearchResult = z.infer<typeof searchResultSchema>;
+
+// ISO 3166-1 alfa-2, sunucunun döndürdüğü biçimde: hep büyük harf ("DE")
+export const countryCodeSchema = z.string().regex(/^[A-Z]{2}$/);
+
+export const rebirthResultsSchema = z.object({
+  total: z.number().int().nonnegative(),
+  // Sunucu çoktan aza sıralı döner; hiç oy almamış ülke listede yer almaz
+  results: z.array(
+    z.object({
+      country: countryCodeSchema,
+      count: z.number().int().positive(),
+    }),
+  ),
+});
+
+export type RebirthResults = z.infer<typeof rebirthResultsSchema>;
+
+export const rebirthVoteSchema = z.object({ country: countryCodeSchema });
+
+export type RebirthVote = z.infer<typeof rebirthVoteSchema>;

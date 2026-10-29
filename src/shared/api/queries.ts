@@ -7,6 +7,8 @@ import {
   fetchCategories,
   fetchCategory,
   fetchFeaturedItems,
+  fetchMyRebirthVote,
+  fetchRebirthResults,
 } from "./endpoints";
 // 1. Kategoriler için Query Key Factory
 export const categoryQueries = {
@@ -60,5 +62,21 @@ export const commentQueries = {
     queryOptions({
       queryKey: [...commentQueries.all(), "byItem", itemId] as const,
       queryFn: ({ signal }) => fetchCommentsByItem(itemId, signal),
+    }),
+};
+
+export const surveyQueries = {
+  all: () => ["surveys", "rebirth"] as const,
+  // Anahtar: ["surveys", "rebirth", "results"]
+  results: () =>
+    queryOptions({
+      queryKey: [...surveyQueries.all(), "results"] as const,
+      queryFn: ({ signal }) => fetchRebirthResults(signal),
+    }),
+  // Anahtar: ["surveys", "rebirth", "myVote"]; null = henüz oy yok
+  myVote: () =>
+    queryOptions({
+      queryKey: [...surveyQueries.all(), "myVote"] as const,
+      queryFn: ({ signal }) => fetchMyRebirthVote(signal),
     }),
 };
