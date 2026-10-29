@@ -7,16 +7,10 @@ import { NotFoundPage } from "../../shared/ui/NotFoundPage";
 import { CategoryLink } from "./CategoryLink";
 import { RatingBars } from "./RatingBars";
 import { ErrorState } from "../../shared/ui/ErrorState";
-import { useDisplayedDistribution } from "../votes/useDisplayedDistribution";
-import { useMyVotes } from "../votes/votesContext";
 import { VoteButtons } from "../votes/VoteButtons";
 import { CommentSection } from "../comments/CommentSection";
 
 function ItemDetail({ item }: { item: Item }) {
-  // Erken return yok, item kesinlikle var. Hook'lar güvenle koşulsuz çağrılır.
-  const distribution = useDisplayedDistribution(item);
-  const myVote = useMyVotes()[item.id];
-
   return (
     <article>
       <header className="mb-8">
@@ -33,10 +27,10 @@ function ItemDetail({ item }: { item: Item }) {
       {/* Geniş ekranda dağılım solda, oy düğmeleri sağda; telefonda alt alta */}
       <div className="grid gap-4 md:grid-cols-[3fr_2fr]">
         <section className="rounded-lg border border-line bg-surface p-5">
-          <RatingBars distribution={distribution} />
+          <RatingBars distribution={item.distribution} />
         </section>
         <section className="rounded-lg border border-line bg-surface p-5">
-          <VoteButtons itemId={item.id} current={myVote} />
+          <VoteButtons itemId={item.id} />
         </section>
       </div>
 

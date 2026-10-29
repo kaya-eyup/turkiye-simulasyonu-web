@@ -15,21 +15,24 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { queryClient } from "./app/queryClient";
 import { ThemeProvider } from "./features/theme/ThemeProvider";
-import { VotesProvider } from "./features/votes/VotesProvider";
 
 // Windows'taki Chrome/Edge bayrak emojisi çizemez, "TR" gibi harf gösterir.
 // Tarayıcı çizemiyorsa sadece bayrakları içeren küçük bir yazı tipi ekler; çizebiliyorsa hiçbir şey yapmaz.
 polyfillCountryFlagEmojis("Twemoji Country Flags", flagFontUrl);
-
+// Öğe oyları sunucuya taşındı; tarayıcıda kalan eski kayıt artık okunmuyor.
+// Birkaç sürüm sonra bu satır da silinecek (eski kayıtlar o zamana kadar temizlenmiş olur).
+try {
+  localStorage.removeItem("tsim:votes:v1");
+} catch {
+  // Depolama kapalıysa silinecek bir şey de yok
+}
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <ThemeProvider>
-      <VotesProvider>
-        <QueryClientProvider client={queryClient}>
-          <RouterProvider router={router} />
-          <ReactQueryDevtools initialIsOpen={false} />
-        </QueryClientProvider>
-      </VotesProvider>
+      <QueryClientProvider client={queryClient}>
+        <RouterProvider router={router} />
+        <ReactQueryDevtools initialIsOpen={false} />
+      </QueryClientProvider>
     </ThemeProvider>
   </StrictMode>,
 );

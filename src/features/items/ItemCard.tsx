@@ -1,7 +1,7 @@
 import { Link } from "react-router";
 import type { Item } from "../../shared/api/schemas";
 import { summarize } from "../../shared/lib/rating";
-import { useDisplayedDistribution } from "../votes/useDisplayedDistribution";
+
 // Sadece bu karta lazım olan alanları seçiyoruz
 export type ItemCardData = Pick<
   Item,
@@ -9,9 +9,8 @@ export type ItemCardData = Pick<
 >;
 
 export function ItemCard({ item }: { item: ItemCardData }) {
-  const distribution = useDisplayedDistribution(item);
-  const { average, total } = summarize(distribution);
-
+  // Oylar sunucuda: gelen dağılım kendi oyumu da içeriyor, üstüne bir şey eklenmiyor
+  const { average, total } = summarize(item.distribution);
   return (
     <Link
       to={`/oge/${item.id}`}
