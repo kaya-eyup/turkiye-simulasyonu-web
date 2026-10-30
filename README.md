@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/kaya-eyup/turkiye-simulasyonu-web/actions/workflows/ci.yml/badge.svg)](https://github.com/kaya-eyup/turkiye-simulasyonu-web/actions/workflows/ci.yml)
 
-**Canlı:** https://turkiyesimulasyonu.eyupkaya.com · **API:** [turkiye-simulasyonu-api](https://github.com/kaya-eyup/turkiye-simulasyonu-api)
+**Canlı:** https://turkiyesimulasyonu.eyupkaya.com · **API:** [turkiye-simulasyonu-api](https://github.com/kaya-eyup/turkiye-simulasyonu-api) ([Swagger belgesi](https://turkiye-simulasyonu-api.runasp.net/swagger))
 
 Türkiye'ye özgü yemekleri, şehirleri, adetleri ve absürtlükleri puanlama ve yorumlama platformu. React + TypeScript + Vite; veri katmanında TanStack Query ve zod.
 
@@ -45,7 +45,6 @@ src/
 - Öğe oyu verilince hem `my-votes` hem öğe sorguları geçersiz kılınıp sunucudan yeniden okunuyor; dağılım istemcide tahmin edilmiyor, çünkü bu arada başkasının oyu da girmiş olabilir. `invalidateQueries`'in promise'i döndürüldüğü için mutation yeni sayılar gelene kadar "pending" kalıyor: düğmeler o sürede kapalı.
 - `my-votes` tek sorgu, tek anahtar (`["itemVotes", "mine"]`): NavBar hep ekranda olduğu için sorgu her sayfada canlı, öğe sayfası ve "Oylarım" rozeti aynı önbellekten okuyor. Her kart kendi oyunu ayrıca sormuyor.
 - Anket sonuçları oy vermeden gösterilmiyor.
-- Anket oyları sunucuda. Tarayıcı ilk ziyarette `crypto.randomUUID()` ile bir kimlik üretip localStorage'da saklar (`tsim:voter-id:v1`) ve sadece anket isteklerine `X-Voter-Id` başlığıyla ekler. Sonuçlar oy vermeden gösterilmez.
 - Bayraklar emoji: `"TR"` → 🇹🇷. Windows'taki Chrome/Edge bayrak emojisi çizemediği için `country-flag-emoji-polyfill` yalnızca o tarayıcılarda bayrak yazı tipini (78 KB, sitenin kendi dosyası, CDN değil) yükler. Ülke adları `Intl.DisplayNames` ile Türkçe, sıralama `Intl.Collator("tr")` ile.
 - Anket grafiği kütüphanesiz SVG: dilim başına bir `<circle>` (`stroke-dasharray`). Renkler sıraya göre; ülkeyi renk değil bayrak tanıtır (en çok oy alan bayrakların çoğu kırmızı-beyaz). Türkiye her zaman bayrak kırmızısı ve ilk 5'te olmasa da kendi sırasıyla görünür.
 - Sayfa seviyesinde hata ekranı: bir sayfa çökerse NavBar ayakta kalır.
@@ -72,7 +71,7 @@ src/
 2. `id` ve `createdAt` sunucuda üretilir.
 3. POST, oluşturulan kaydı döndürür.
 4. Doğrulama sunucuda tekrar yapılır: `author` en fazla 30 karakter (boşsa "anonim"), `body` kırpıldıktan sonra 3-500 karakter.
-5. Oylar: `ItemVotes(voterId, itemId, stars)` + `(voterId, itemId)` tekillik kısıtı; dağılım `UPDATE ... SET n = n + 1` ile kaydırılır. _Durum: hazır; kullanıcı girişi yerine anonim kimlik.__
+5. Oylar: `ItemVotes(voterId, itemId, stars)` + `(voterId, itemId)` tekillik kısıtı; dağılım `UPDATE ... SET n = n + 1` ile kaydırılır. _Durum: hazır; kullanıcı girişi yerine anonim kimlik._
 
 ## Bilinçli borçlar
 
@@ -81,7 +80,8 @@ src/
 - Oy verilince bütün öğe sorguları geçersiz kılınıyor; kategori listesi açıkken oy verilirse liste de yeniden çekiliyor. 1224 öğede bedeli yok, ama doğru çözüm yalnızca değişen öğenin anahtarını geçersiz kılmak.
 - Tarayıcıda kalan eski oy kaydı (`tsim:votes:v1`) açılışta siliniyor; bu temizlik satırı birkaç sürüm sonra kaldırılacak.
 - Anket ülke listesi (249 kod) API'deki listenin kopyası; biri değişirse diğeri elle güncellenmeli. Geçersiz kodu yine de sunucu reddeder.
-- Kategori sayfası sıralaması ham ortalamayla: çok oy almış öğeyle tek oy almış öğe aynı kefede.- Test yok. İlk adaylar: `summarize`, `groupResults`, `storage`, `toUserMessage`.
+- Kategori sayfası sıralaması ham ortalamayla: çok oy almış öğeyle tek oy almış öğe aynı kefede.
+- Test yok. İlk adaylar: `summarize`, `groupResults`, `storage`, `toUserMessage`.
 - Hata ekranı sayfa seviyesinde; tek bir kart çökünce bütün sayfa hata gösterir.
 - Tema FOUC: kayıtlı tema, JS yüklenene kadar uygulanmıyor.
 - Sekmeler arası anlık senkron yok: ikinci sekme, odağa dönünce ve veri bayatlamışsa (60 sn) yeniden okuyor.
