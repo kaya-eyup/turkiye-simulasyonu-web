@@ -25,7 +25,7 @@ export function HomePage() {
           <img
             src={flagUrl}
             alt=""
-            className="h-7 w-auto shrink-0 rounded-[3px] sm:h-12"
+            className="h-10 w-auto shrink-0 rounded-[3px] sm:h-12"
           />
           <h1 className="font-condensed text-4xl leading-none font-bold sm:text-7xl">
             Türkiye Simülasyonu
@@ -33,7 +33,7 @@ export function HomePage() {
           <img
             src={flagUrl}
             alt=""
-            className="h-7 w-auto shrink-0 rounded-[3px] sm:h-12"
+            className="h-10 w-auto shrink-0 rounded-[3px] sm:h-12"
           />
         </div>
         {/* Her cümle kendi satırında: "block" ile zorlanıyor, dar ekranda cümle içinde kendiliğinden kırılıyor */}
