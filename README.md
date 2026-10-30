@@ -2,6 +2,8 @@
 
 [![CI](https://github.com/kaya-eyup/turkiye-simulasyonu-web/actions/workflows/ci.yml/badge.svg)](https://github.com/kaya-eyup/turkiye-simulasyonu-web/actions/workflows/ci.yml)
 
+![Demo: arama, oy verme, yorum ve anket](docs/demo.gif)
+
 **Canlı:** https://turkiyesimulasyonu.eyupkaya.com · **API:** [turkiye-simulasyonu-api](https://github.com/kaya-eyup/turkiye-simulasyonu-api) ([Swagger belgesi](https://turkiye-simulasyonu-api.runasp.net/swagger))
 
 Türkiye'ye özgü yemekleri, şehirleri, adetleri ve absürtlükleri puanlama ve yorumlama platformu. React + TypeScript + Vite; veri katmanında TanStack Query ve zod.
